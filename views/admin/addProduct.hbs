@@ -1,0 +1,234 @@
+{{>admin-navbar}}
+
+
+
+<div class="mainDiv addProduct">
+    <div class="container">
+        <div class="row">
+            <div class=" formDiv">
+
+                <div class="mx-auto" style="border-bottom: 1px solid #ced4da;">
+                    {{#if product}}
+                    <h2>Update Product</h2>
+                    {{else}}
+                    <h2>Add Product</h2>
+                    {{/if}}
+                </div>
+                <div class="container" style="margin-top: 10px;">
+
+
+                    <div class="container">
+                        {{#if product}}
+                        <form action="/admin/updateProduct/{{product._id}}" method="post">
+                            {{else}}
+                            <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
+                                {{/if}}
+                                <div class="row form-group">
+                                    <div class="col-6">
+                                        <p>
+                                            <label for="name">Product Name</label>
+                                            <span>{{nameErr}}</span>
+                                        </p>
+                                        <textarea name="name" type="text"
+                                            class="form-control bigInputs">{{product.name}}</textarea>
+
+                                        <label for="description">Description</label>
+                                        <br>
+                                        <textarea name="description" type="textarea"
+                                            class="form-control bigInputs">{{product.description}}</textarea>
+
+                                        <div class="imgBoxP2 ">
+                                            <label class="mx-auto d-inline">Images</label>
+                                            <label for="files" class="addimagebtn">Add new image</label>
+                                            <input type="file" name="files" id="files" style="display:none" multiple
+                                                onchange="imagechange(event)">
+
+                                            <div class="imagesBox form-control col" id="appendImages">
+                                                <script>
+                                                    function imageload(id, count) {
+                                                        for (var i = 0; i < count; i++) {
+                                                            let presentdiv = document.getElementById('appendImages')
+
+                                                            let div = document.createElement('div');
+                                                            div.id = 'imagediv' + i
+                                                            div.className = 'd-inline'
+                                                            presentdiv.appendChild(div)
+
+                                                            let image = document.createElement('img');
+                                                            image.src = '/images/products/' + id + '/' + i + '.jpg'
+                                                            image.id = 'productimage' + i
+                                                            let newdiv = document.getElementById('imagediv' + i)
+                                                            newdiv.appendChild(image)
+
+                                                            let itag = document.createElement('i')
+                                                            itag.className = "fa fa-close close"
+                                                            newdiv.appendChild(itag)
+                                                        }
+                                                    }
+                                                    imageload('{{product._id}}', '{{product.imagescount}}')
+                                                </script>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="price">Price</label>
+                                                <input name="price" type="text" class="form-control"
+                                                    value="{{product.price}}">
+                                            </div>
+                                            <div class="col">
+                                                <label for="maxPrice">Max Price</label>
+                                                <input name="maxPrice" type="text" class="form-control"
+                                                    value="{{product.maxPrice}}">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="stock">Stock</label>
+                                                <input name="stock" type="text" class="form-control"
+                                                    value="{{product.stock}}">
+                                            </div>
+                                            <div class="col">
+                                                <label for="offer">Offer</label>
+                                                <input name="offer" type="text" class="form-control"
+                                                    value="{{product.offer}}">
+                                            </div>
+                                            <div class="col">
+                                                <label for="brand">Brand</label>
+                                                <input name="brand" type="text" class="form-control"
+                                                    value="{{product.brand}}">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row">
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <h5 style="display: inline;">Categories</h5>
+                                                <div style="display: inline; text-align: right;">
+                                                    <p style="display: inline; color: #3083b3; cursor: pointer;" >Add new Catergory</p>
+                                                    <p style="display: inline; cursor: pointer; color: #cc2e99;" id="new-categ">Add new field</p>
+                                                    {{!-- <img src="/images/clipart433845.png" alt="" style="width: 20px; margin-left: 20px;" id="new-categ"> --}}
+                                                </div>
+                                            </div>
+                                            <div class=""
+                                                style="padding: 0%; margin: 0%; overflow: auto; height:185px; margin-left: 11px;"
+                                                id="categ-parent">
+                                                <div id="categ-label" style="margin-bottom: 9px;">
+                                                    <input type="text" id="categ-key" name="category-1-key"
+                                                        class="form-control d-inline categ">
+                                                    <h4 style="display: inline;"> :</h4>
+                                                    <input type="text" id="categ-value" name="category-1-value"
+                                                        class="form-control d-inline categ">
+                                                </div>
+
+                                                <script>
+
+                                                    let sl = 2
+
+                                                    let addNewCategBtn = document.getElementById('new-categ')
+
+                                                    addNewCategBtn.addEventListener('click', () => {
+
+                                                        let categParent = document.getElementById('categ-parent')
+
+                                                        let newlabel = document.createElement('div')
+                                                        newlabel.style = "margin-bottom : 9px;"
+                                                        newlabel.id = 'label' + sl
+                                                        categParent.appendChild(newlabel)
+                                                        let parent = document.getElementById('label' + sl)
+
+                                                        let keyInput = document.createElement('input')
+                                                        keyInput.type = 'text'
+                                                        keyInput.id = 'categ-key' + sl
+                                                        keyInput.name = 'category-' + sl + '-key'
+                                                        keyInput.classList = 'form-control d-inline categ'
+                                                        parent.appendChild(keyInput)
+
+                                                        let colon = document.createElement('h4')
+                                                        colon.style = "display: inline;"
+                                                        colon.innerHTML = ' : '
+                                                        parent.appendChild(colon)
+
+                                                        let valueInput = document.createElement('input')
+                                                        valueInput.type = 'text'
+                                                        valueInput.id = 'categ-value' + sl
+                                                        valueInput.name = 'category-' + sl + '-value'
+                                                        valueInput.classList = 'form-control d-inline categ'
+                                                        parent.appendChild(valueInput)
+
+                                                        sl++;
+                                                    })
+
+
+
+
+
+
+
+                                                </script>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div class="d-flex justify-content-center" style=" margin-bottom: 10px;">
+                                    <input type="submit">
+                                </div>
+                            </form>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function imagechange(event) {
+
+        for (var i = 0; i < event.target.files.length; i++) {
+
+            let presentdiv = document.getElementById('appendImages')
+
+            let div = document.createElement('div');
+            div.id = 'imagediv' + i
+            div.className = 'd-inline'
+            presentdiv.appendChild(div)
+
+            let image = document.createElement('img');
+            image.src = URL.createObjectURL(event.target.files[i])
+            image.id = 'productimage' + i
+            let newdiv = document.getElementById('imagediv' + i)
+            newdiv.appendChild(image)
+
+            let itag = document.createElement('i')
+            itag.className = "fa fa-close close"
+            newdiv.appendChild(itag)
+        }
+
+    }
+
+
+    var closebtns = document.getElementsByClassName("close");
+    var i;
+
+    for (i = 0; i < closebtns.length; i++) {
+        closebtns[i].addEventListener("click", function () {
+            this.parentElement.classList.add("d-none")
+            this.parentElement.classList.remove("d-inline")
+
+        });
+    }
+
+</script>

@@ -1,0 +1,44 @@
+{{>user-navbar}}
+
+
+<div class="cartMain">
+    <div class="container">
+        <div class="row">
+            <div class="col cartProducts">
+                <div class="cartTable">
+
+
+
+                    <h4>Order Summary</h4>
+                    <hr>
+
+                    <table style="table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th>sl</th>
+                                <th>Product</th>
+                                <th>Date</th>
+                                <th>Payment</th>
+                                <th>status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders}}
+                            <tr>
+                                <td>{{@index}}</td>
+                                <td>{{this.product.name}}</td>
+                                <td>{{this.date}}</td>
+                                <td>{{this.paymentMethod}}</td>
+                                <td>{{this.status}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

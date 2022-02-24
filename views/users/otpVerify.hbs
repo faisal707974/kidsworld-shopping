@@ -1,0 +1,42 @@
+<div class=" maindiv d-flex align-items-center">
+
+    {{!-- copied login page starts here --}}
+    <div class="container-fluid">
+        <div class="row main-content bg-success text-center">
+            <div class="col-md-4 text-center company__info">
+                <span class="company__logo">
+                    <img class="logo-image" src="/images/FDSD.png" alt="">
+                </span>
+                <h1 class="logo-text" href="#">Kids World</h1>
+            </div>
+            <div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+                <div class="container-fluid">
+                    <div class="row">
+                        {{#if userExist}}
+                        <h2>Welcome back</h2>
+                        {{else}}
+                        <h2>Create an Account</h2>
+                        {{/if}}
+                    </div>
+                    <div class="row">
+                        <h5>Enter the OTP sent to the number</h5>
+                        <p >+91 {{number}}       <a class="col" style="font-size: 9pt;" href="/login">Change number?</a></p> 
+                    </div>
+                    <div class="row">
+                        <form control="" class="form-group" method="post" action="/otpVerify">
+                            <div class="row">
+                                <input type="tel" name="otp" id="otp" class="form__input"
+                                    placeholder="One Time Password">
+                            </div>
+
+                            <div class="row submit-button">
+                                <input type="submit" value="Verify" class="btn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{!-- copied login page ends here --}}
+</div>

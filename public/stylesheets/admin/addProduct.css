@@ -1,0 +1,77 @@
+.mainDiv{
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+    height: 89vh;
+}
+
+
+.imgBoxP2 {
+height: 130px;
+margin-bottom: 20px;
+/* width: 1031px; */
+}
+
+.imgBoxP3{
+    display: flex;
+    align-items: center;
+}
+
+.imagesBox{
+
+    height: 147px;
+    white-space: nowrap;
+    overflow-y: auto;
+}
+
+.imagesBox img{
+    height: 116px;
+    margin-right: 20px;
+    border: 1px solid black;
+}
+.bigInputs{
+    height: 81px;
+}
+.addProduct p{
+    margin-bottom: 0;
+}
+.addProduct .formDiv{
+    background-color: white;
+    margin: 20px;
+    border-radius: 15px;
+}
+textarea{
+    resize: none;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    padding: 12px 16px;
+    transform: translate(0%, -50%);
+  }
+
+  .fa-close{
+      position: relative;
+      top: -37px;
+      right: 43px;
+
+  }
+  .testimg{
+      height: 116px;
+      border: 1px solid black;
+  }
+
+  .imagesBox div{
+      width: 100px;
+  }
+
+  .addimagebtn{
+      height: 20px;
+      margin-left: 330px;
+      cursor: pointer;
+      color: #cc2e99;
+  }
+  .categ{
+      width: 48%;
+  }

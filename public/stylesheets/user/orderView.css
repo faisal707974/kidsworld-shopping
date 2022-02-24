@@ -1,0 +1,47 @@
+.cartMain{
+    width: 100%;
+    min-height: 89vh;
+    height: 100%;
+    background-color: #eeeded;
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+}
+.cartTable{
+    margin-top: 30px;
+    background-color: white;
+    border: 1px gainsboro;
+    border-style: solid;
+    padding: 10px;
+    border-radius: 5px;
+    width: 1113px;
+    height: 500px;
+}
+
+
+.cartDetails{
+    margin-top: 30px;
+    background-color: white;
+    border: 1px gainsboro;
+    border-style: solid;
+    padding: 10px;
+    border-radius: 5px;
+    height: 500px;
+}
+.cartTable thead tr{
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    color: #a5bbc8;
+    position: sticky;
+    top: 0;
+}
+.cartTable tbody{
+    height: 150px;
+    border-bottom: 1px solid #a5bbc8;
+    color: #979b9d;
+}
+.cartTable tbody img{
+    width:100px;
+}
+
+.cartTable table{
+    width: 100%;
+}

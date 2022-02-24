@@ -1,0 +1,20 @@
+.dash-boxes{
+    width: 300px;
+    /* height: 150px; */
+    margin: 30px 0;
+    border-radius: 20px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    background-image: linear-gradient(180deg,#cf279a,#069ab9);
+    padding: .15%;
+}
+.inner-dash-boxes{
+    width: 100%;
+    /* height: 146px; */
+    border-radius:20px;
+    background-color: white;
+    text-align: center;
+    padding: 20px 0;
+}
+

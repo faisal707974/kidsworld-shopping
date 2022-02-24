@@ -1,0 +1,41 @@
+.main-div{
+    height: 89vh;
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+}
+.field-div{
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+}
+.product_table th{
+    font-size: 10pt;
+}
+
+.product_table_head button{
+    border-radius: 20px;
+}
+
+.product_table tbody{
+    border-bottom: 1px solid black;
+}
+
+.product-card img{
+    display: block;
+    height: 223px;
+}
+
+.product-overflow-div::-webkit-scrollbar {
+    display: none;
+}
+
+.product-card span{
+    color: #fe679b;
+    font-size: 14pt;
+}
+.product-card p{
+    margin-bottom: 0rem;
+}
+.product-card{
+    width: 1140px;
+}

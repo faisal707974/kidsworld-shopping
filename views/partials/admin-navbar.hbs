@@ -1,0 +1,42 @@
+
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="logo-div">
+      <img class="logo-image" src="/images/FDSD.png" alt="">
+      {{!-- <div style="width: 200px;"> --}}
+        <h1 class="logo-text" href="#">Kids World</h1>
+        {{!--
+      </div> --}}
+    </div>
+    
+    <div class="collapse navbar-collapse nav-ul-div" id="navbarNav">
+      <ul class="navbar-nav d-none d-xl-flex">
+        <li class="nav-item">
+          <a class="nav-link {{dashboard}}" aria-current="page" href="/admin">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{reports}}" href="#">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{charts}}" href="#">Charts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{forms}}" href="#">Forms</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link test {{usermanagement}}" href="/admin/user-management">User Management</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {{productManagement}}" href="/admin/product_management">Product Management</a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav-icons d-flex justify-content-end col-lg-2 col-md-4 col-6">
+      <i class="p-2 fa fa-search"></i>
+      <i class="p-2 fa fa-user-o"></i>
+      <i class="p-2 fa fa-heart-o"></i>
+      <i class="p-2 fa fa-sign-in"></i>
+      <i class="p-2 fa fa-sign-out d-none"></i>
+    </div>
+  </div>
+</nav>

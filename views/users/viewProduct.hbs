@@ -1,0 +1,68 @@
+{{>user-navbar}}
+
+{{!-- <div class="cartMain">
+    <div class="container">
+        <div class="row">
+            <div class="col cartProducts">
+                <div class="cartTable"> --}}
+
+
+                    <div class="row" style="--bs-gutter-x:0; padding-top: 10px;">
+                        <div class="col-2 small-box" style="width: 10%;">
+                            {{#each product.imageArr}}
+                            <div class="small-boxes">
+                                <img src="/images/products/{{../product._id}}/{{this}}.jpg" alt="">
+                            </div>
+                            {{/each}}
+                        </div>
+                        <div class="col-6 large-box">
+                            <div class="">
+                                <img src="/images/products/{{product._id}}/0.jpg" alt="">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="view-details">
+                                <h2>{{product.name}}</h2>
+                                <h5>{{product.description}}</h5>
+                                <p>***** 1 review</p>
+                                <p>{{product.price}}.00 Rs</p>
+                                <br>
+                                <p>{{product.stock}} pieces in stock</p>
+                                <br>
+                                <p>Quantity: 1</p>
+                                <br>
+                            </div>
+
+                            <div class="view-buttons-div">
+                                <div class="row view-buttons">
+                                    <div class="col">
+                                        <button>
+                                            <i class="fa fa-shopping-cart"></i>
+                                            add to cart
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button>
+                                            <i class="fa fa-heart"></i>
+                                            add to favorites
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row view-buttons">
+                                    <button>
+                                        <i class="fa fa-money"></i>
+                                        Buy Now
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    {{!--
+                </div>
+            </div>
+        </div>
+    </div>
+</div> --}}

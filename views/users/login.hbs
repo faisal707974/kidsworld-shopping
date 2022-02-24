@@ -1,0 +1,51 @@
+<div class=" maindiv d-flex align-items-center">
+
+{{!-- copied login page starts here --}}
+            <div class="container-fluid">
+                <div class="row main-content bg-success text-center">
+                    <div class="col-md-4 text-center company__info">
+                        <span class="company__logo">
+                            <img class="logo-image" src="/images/FDSD.png" alt="">
+                        </span>
+                        <h1 class="logo-text" href="#">Kids World</h1>
+                    </div>
+
+
+
+                    <div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <h2>Log In</h2>
+                            </div>
+                            <div class="row">
+
+
+                                <form action="/otpRequest" class="form-group" method="post">
+                                    <div class="row">
+                                        <input type="text" name="mobileNumber" id="mobileNumber" class="form__input"
+                                            placeholder="Enter mobile number" pattern="^\d{10}$">
+                                    </div>
+                                    {{!-- <div class="row">
+                                        <!-- <span class="fa fa-lock"></span> -->
+                                        <input type="password" name="password" id="password" class="form__input"
+                                            placeholder="Password">
+                                    </div> --}}
+                                    <div class="row submit-button">
+                                        <input type="submit" value="Request OTP" class="btn">
+                                    </div>
+                                </form>
+
+
+                            </div>
+                            <div class="row">
+                                <p>Don't have an account? <a href="signup">Register Here</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+{{!-- copied login page ends here --}}
+</div>

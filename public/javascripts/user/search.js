@@ -1,0 +1,1 @@
+document.getElementById('searchIcon').addEventListener('click')

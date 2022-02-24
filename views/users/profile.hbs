@@ -1,0 +1,69 @@
+{{>user-navbar}}
+
+
+<div class="cartMain">
+    <div class="container">
+        <div class="row">
+            <div class="col cartProducts">
+                <div class="cartTable">
+
+
+
+                    <div>
+                        <h4>Your Profile</h4>
+                        <hr>
+                    </div>
+                    <div>
+                        <div class="row" style="line-height: 20px;">
+                            <div class="col" style="padding-left: 150px;font-size: 13pt;">
+                                <div class="profilepic">
+                                    <div>
+
+                                        <img src="/images/pngkey.com-profile-icon-png-2024691.png" alt="" style="display: block;">
+                                    </div>
+                                    <div>
+                                        <h5>Hi, User</h5>
+                                    </div>
+                                </div>
+
+                                <form action="/updateUser" method="post">
+
+                                    <label for="">Name</label>
+                                    <input name="name" type="text" class="form-control" value="{{user.name}}">
+                                    <br>
+                                    <label for="">Mobile</label>
+                                    <input name="mobile" type="text" class="form-control" value="{{user.mobile}}" readonly>
+                                    <br>
+                                    <label for="">Email</label>
+                                    <input name="email" type="email" class="form-control" value="{{user.email}}">
+                                    <br>
+                                    <input type="submit" value="  save  ">
+
+                                </form>
+
+
+                            </div>
+                            <div class="col" style="padding-left: 150px;font-size: 13pt;">
+                                <p>My orders</p>
+                                <p>Account settings</p>
+                                <p>Manage Addresses</p>
+                                <p>Profile information</p>
+                                {{!-- <p>Notification preferences</p> --}}
+                                <p>Gift cards</p>
+                                <p>Payments</p>
+                                <p>My Rewards</p>
+                                <p>My Reviews & Ratings</p>
+                                <p>All notifications</p>
+                                <p>My favorites</p>
+                                <p>Help Center</p>
+                                <p>FAQ</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

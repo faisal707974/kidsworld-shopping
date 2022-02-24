@@ -1,0 +1,99 @@
+{{>admin-navbar}}
+
+
+
+<div class="mainDiv addProduct">
+    <div class="container">
+        <div class="row">
+            <div class=" formDiv">
+
+                <div class="mx-auto">
+                    <h2>Update Product</h2>
+                </div>
+
+                <div class="container">
+
+
+
+                    <div class="container">
+                        <form action="/admin/updateProduct/{{product._id}}" method="post">
+                            <div class="row form-group">
+                                <div class="col-6">
+                                    <p>
+                                        <label for="name">Product Name</label>
+                                        <span>{{nameErr}}</span>
+                                    </p>
+                                    <textarea name="name" type="text" class="form-control bigInputs">{{product.name}}</textarea>
+                                    <br>
+                                    <label for="description">Description</label>
+                                    <br>
+                                    <textarea name="description" type="textarea"
+                                        class="form-control bigInputs">{{product.description}}</textarea>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="price">Price</label>
+                                            <input name="price" type="text" class="form-control" value="{{product.price}}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="maxPrice">Max Price</label>
+                                            <input name="maxPrice" type="text" class="form-control" value="{{product.maxPrice}}">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="stock">Stock</label>
+                                            <input name="stock" type="text" class="form-control" value="{{product.stock}}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="offer">Offer</label>
+                                            <input name="offer" type="text" class="form-control" value="{{product.offer}}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="brand">Brand</label>
+                                            <input name="brand" type="text" class="form-control" value="{{product.brand}}">
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <label for="categories">Categories</label>
+                                    <input name="categories" type="text" class="form-control" value="{{product.categories}}">
+                                </div>
+                            </div>
+                            <br>
+                            
+                            <div class="d-flex justify-content-center">
+                                <input type="submit">
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr>
+
+                    <div class="imgBoxP1">
+                        <div class="imgBoxP2 row">
+                            <div class="imgBoxP3 col-2">
+                                <div class="imgBoxP4">
+                                    <h5 class="mx-auto">Images</h5>
+                                    <a href="">
+                                        <button style="border: none;">
+                                            Add new Image
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="imagesBox form-control col">
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

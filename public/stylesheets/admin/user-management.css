@@ -1,0 +1,101 @@
+.mainDiv{
+    background-image:url('/images/wallpaperflare.com_wallpaper.jpg');
+    height: 89vh;
+}
+
+.userManage{
+    background-color: white;
+    margin: 20px;
+    height: 510px;
+    border-radius: 15px;
+    width: 1115px;
+}
+.userManage .heading{
+    margin-top:5px;
+}
+.userManage th,td{
+    text-align: center;
+    width: 186px;
+}
+.userManage .thead th{
+    border: none;
+    border-bottom: 1px solid #c8c9ca;
+    border-top:1px solid #c8c9ca;
+}
+
+
+
+
+/* tbody */
+
+.userManage .tbody::-webkit-scrollbar {
+    display: none;
+}
+
+.userManage .tbody table{
+    border-style: hidden;
+}
+.userManage .tbody table img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+/* tbody tr */
+.userManage .tbody tr{
+    margin: 20px;
+}
+.userManage .tbody tr:nth-child(odd){
+    /* background-color: #f8ecec; */
+    background-image: linear-gradient(90deg,#e7edef,white);
+}
+.userManage .tbody tr:nth-child(even){
+    /* background-color: #f8ecec; */
+    background-image: linear-gradient(90deg,white,#f3e1e2);
+}
+
+/* tbody td */
+
+/* .userManage td,
+.userManage th{
+    border: 1px solid black;
+} */
+
+
+.userManage .tbody td:first-child,
+.userManage .thead th:first-child{
+    width: 3%;
+}
+.userManage .tbody td:nth-child(2){
+    width: 20%; 
+}
+.userManage .thead th:nth-child(2){
+    width: 20%;  
+}
+.userManage .tbody td:nth-child(2) div{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-left: 30px;
+}
+.userManage .tbody td:nth-child(3),
+.userManage .thead th:nth-child(3){
+    width: 10%;
+}
+.userManage .tbody td:nth-child(4),
+.userManage .thead th:nth-child(4){
+    width: 10%;
+}
+.userManage .tbody td:nth-child(5),
+.userManage .thead th:nth-child(5){
+    width: 7%;
+}
+.userManage .tbody td:nth-child(6),
+.userManage .thead th:nth-child(6){
+    width: 7%;
+}
+.userManage .tbody td:nth-child(7),
+.userManage .thead th:nth-child(7){
+    width: 10%;
+}
+

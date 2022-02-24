@@ -1,0 +1,84 @@
+.cartMain{
+    width: 100%;
+    min-height: 89vh;
+    height: 100%;
+    background-color: #eeeded;
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+}
+.cartTable{
+    margin-top: 30px;
+    background-color: white;
+    border: 1px gainsboro;
+    border-style: solid;
+    padding: 10px;
+    border-radius: 10px;
+    width: 1000px;
+    height: 500px;
+}
+.cartProducts{
+    display: flex;
+    justify-content: center;
+}
+
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+
+.small-box div{
+    margin-right: auto;
+    margin-left: auto;
+}
+.small-boxes{
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    border: 1px solid black;
+}
+.large-box div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:85vh;
+    /* border: 1px solid black; */
+}
+
+.small-box img{
+    height: 75px;
+    max-width: 75px;
+}
+
+.large-box img{
+    height: 530px;
+}
+.view-buttons{
+    width: 500px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.view-buttons button{
+    width: 100%;
+    height: 50px;
+    border: none;
+}
+.view-buttons .col{
+    padding: 0%;
+    display: flex;
+    justify-content: space-around;
+}
+.view-buttons .col button{
+    width: 240px;
+}
+
+.view-details{
+    /* padding-left:40px ; */
+}
+.view-buttons-div{
+    position: relative;
+    top: 113px;
+}

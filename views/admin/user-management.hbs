@@ -1,0 +1,72 @@
+{{>admin-navbar}}
+
+
+<div class="mainDiv">
+    <div class="container">
+        <div class="row">
+            <div class="userManage">
+                <div class="heading">
+                    <h3>
+                        User Management
+                    </h3>
+                </div>
+                <div class="thead">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Mobile</th>
+                                <th>Date created</th>
+                                <th>Purchases</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="tbody" style="overflow: auto;height: 430px;">
+                    <table>
+                        <tbody>
+                            {{#each users}}
+                            <tr>
+                                <td>
+                                    {{@index}}
+                                </td>
+                                <td>
+                                    <div>
+                                        <img src="/images/products/1/1.jpg" alt="" style="margin-right: 15px;">
+                                        {{this.name}}
+                                    </div>
+                                </td>
+                                <td>{{this.mobile}}</td>
+                                <td>{{this.date}}</td>
+                                <td>34</td>
+                                <td>3433.43</td>
+                                <td>
+                                    <div>
+                                        {{#if this.block}}
+                                        <a href="/admin/unblockuser/{{this._id}}">
+                                            <button>
+                                                Unblock User
+                                            </button>
+                                        </a>
+                                        {{else}}
+                                        <a href="/admin/blockuser/{{this._id}}">
+                                            <button>
+                                                Block User
+                                            </button>
+                                        </a>
+                                        {{/if}}
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

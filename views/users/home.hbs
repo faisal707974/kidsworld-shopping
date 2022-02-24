@@ -1,0 +1,153 @@
+{{>user-navbar}}
+
+{{!-- Head --}}
+<div class="d-flex justify-content-center">
+    <img class="home-image" src="/images/Little-boy-play-toys-child_2560x1600.jpg" alt="">
+</div>
+<br>
+
+
+{{!-- today's trending --}}
+<div>
+    <div class="d-flex justify-content-center my-3">
+        <h3 class="heading">Today's Trending</h3>
+    </div>
+
+    <div class="row ttdiv">
+        <div class="col-12 col-sm-6 col-md-2 d-flex justify-content-center">
+            <div class="card">
+                <div class="home-view-image">
+                    <img src="/images/products/1/1.jpg" class="card-img-top view-image" alt="...">
+                    <div class="overlay-buttons">
+                        <a href="">
+
+                            <div class="btn1">View product</div>
+                        </a>
+                        <a href="">
+
+                            <div class="btn2">Add to cart</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">U.S. Polo Assn. T-shirt</h5>
+                    <p class="card-text">Boys printed Polo Collar</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="card">
+                <img src="/images/products/2/1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Moutec Telescope</h5>
+                    <p class="card-text">description</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="card">
+                <img src="/images/products/3/1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">VTech Smart Watch</h5>
+                    <p class="card-text">description</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="card">
+                <img src="/images/products/4/1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Haliborange Vitamins Omega-3</h5>
+                    <p class="card-text">description</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="card">
+                <img src="/images/products/5/1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Oral-B Electric Toothbrush</h5>
+                    <p class="card-text">description</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="card">
+                <img src="/images/products/6/1.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Cute Unicorn Night Light</h5>
+                    <p class="card-text">description</p>
+                    <p class="card-price">$ 235.34</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{{!-- prouduct view --}}
+
+
+
+<div>
+    <div class="d-flex justify-content-center my-3">
+        <h3 class="heading">Shop here</h3>
+    </div>
+
+    <div class="row ttdiv">
+        <div class="col-12 col-sm-6 col-md-2 d-flex ">
+
+            {{#each products}}
+
+            <div class="card">
+                <div class="home-view-image">
+                    <img src="/images/products/{{this._id}}/0.jpg" class="card-img-top view-image" alt="...">
+                    <div class="overlay-buttons">
+                        <a href="/viewProduct/{{this._id}}">
+
+                            <div class="btn1">View</div>
+                        </a>
+                        <p>
+                            <div class="btn2" style="cursor: pointer;" onclick="addToCart('{{this._id}}')">Add cart</div>
+                        </p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{this.name}}</h5>
+                    <p class="card-price">{{this.price}}</p>
+                </div>
+            </div>
+
+            {{/each}}
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    function addToCart(prodId){
+        $.ajax({
+            url: '/addCart/'+prodId,
+            method : 'get',
+            success : (response)=>{
+                if(response.status){
+                    let count = $('#cartCount').html()
+                    count = parseInt(count)+1
+                    $('#cartCount').html(count)
+                }else{
+                    window.location.href = '/login'
+                }
+            }
+        })
+    }
+
+</script>

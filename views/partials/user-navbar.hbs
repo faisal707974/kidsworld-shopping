@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <div class="logo-div">
+      <img class="logo-image" src="/images/FDSD.png" alt="">
+      {{!-- <div style="width: 200px;"> --}}
+        <h1 class="logo-text" href="#">Kids World</h1>
+        {{!--
+      </div> --}}
+    </div>
+    <div class="collapse navbar-collapse nav-ul-div" id="navbarNav">
+      <ul class="navbar-nav nav-ul d-none d-xl-flex">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Toys</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Travel</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Watch</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Footwear</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Personal Care</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Infants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Others</a>
+        </li>
+      </ul>
+      <i class="p-2 fa fa-search"></i>
+    </div>
+    <div class="nav-icons d-flex justify-content-end col-lg-2 col-md-4 col-6">
+
+      {{#if status}}
+      <a href="/profile"><i class="p-2 fa fa-user-o" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Profile"
+        data-delay="0"></i></a>
+      {{/if}}
+
+      <a href="/cart"><i class="p-2 fa fa-shopping-cart" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cart"
+        data-delay="0"><span class="badge badge-light" id="cartCount">{{cartCount}}</span></i></a>
+      <i class="p-2 fa fa-heart-o" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Favourites"
+        data-delay="0"></i>
+
+      {{#if status}}
+      <a href="/signout"><i class="p-2 fa fa-sign-out" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sign out"
+        data-delay="0"></i></a>
+      {{else}}
+      <a href="/login"><i class="p-2 fa fa-sign-in" data-bs-toggle="tooltip" data-bs-placement="bottom" title="login"
+          data-delay="0"></i></a>
+      {{/if}}
+    </div>
+  </div>
+</nav>

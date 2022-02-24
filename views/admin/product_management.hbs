@@ -1,0 +1,121 @@
+{{>admin-navbar}}
+<div class="main-div">
+    <div class="container">
+        <div class="row">
+            <div class="field-div">
+                <div class="d-flex justify-content-between product_table_head">
+                    <h3 class="main_head">Products List</h3>
+                    <a href="/admin/addProduct">
+                        <button>
+                            Add Product
+                        </button>
+                    </a>
+                </div>
+                <hr>
+                <div class="product-overflow-div" style="height: 420px; width: 100%; overflow: auto;">
+
+                    {{#each products}}
+
+                    <div class="row product-card">
+                        <p>{{this.slno}}</p>
+                        <div class="col-3" style="display: flex; justify-content: center;">
+                            <img src="/images/products/{{this._id}}/0.jpg" alt="">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="col-6 w-70" style="overflow-wrap: anywhere;">
+                                    <div class="row">
+
+                                        <strong>Product : </strong>
+
+                                        <span>{{this.name}}</span>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <strong>Descrition : </strong>
+                                        <span>{{this.description}}</span>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <strong>Categories : </strong>
+                                        <span>{{this.categories}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Stock : </strong>
+                                                    <span>{{this.stock}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Price : </strong>
+                                                    <span>{{this.price}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Max Price : </strong>
+                                                    <span>{{this.maxPrice}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Date added : </strong>
+                                                    <span>{{this.date}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Ratings : </strong>
+                                                    <span>{{this.rating}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Offers : </strong>
+                                                    <span>{{this.offer}}</span>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <p>
+                                                    <strong>Brand : </strong>
+                                                    <span>{{this.brand}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-4"
+                                            style="display: flex; justify-content: flex-start; flex-direction: column-reverse;">
+                                            <a href="/admin/product/{{this._id}}" data-method="delete"
+                                                onclick="return confirm('Are you sure to delete {{this.name}}?')">
+                                                <button style="margin: 3px; width: 95px;">
+                                                    Remove
+                                                </button>
+                                            </a>
+
+                                            <a href="/admin/edit-product/{{this._id}}">
+                                                <button style="margin: 3px; width: 95px;">
+                                                    Edit
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    {{/each}}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
