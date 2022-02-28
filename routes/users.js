@@ -190,11 +190,13 @@ router.post('/updateUser', (req, res) => {
 })
 
 
-router.get('/addcart/:id', (req, res) => {
+router.get('/addcart/:id', async(req, res) => {
+  let product = await productHelpers.getProduct(req.params.id)
+  console.log(product)
   if (req.session.user) {
     let userId = req.session.user._id
     productHelpers.insertCart(userId, req.params.id)
-    res.json({status:true})
+    res.json({status:true,product:product[0].name})
   } else{
     res.json({status:false})
   }
@@ -227,7 +229,7 @@ router.post('/deleteCartItem',(req,res)=>{
 router.post('/place-order',async(req,res)=>{
   let products = await productHelpers.getCartProductList(req.body.userId)
   let totalPrice = await productHelpers.cartTotal(req.session.user._id)
-  productHelpers.placeOrder(req.body,products,totalPrice[0].total).then((orderId)=>{
+  productHelpers.placeOrder(req.body,products,totalPrice[0]?.total).then((orderId)=>{
     if(req.body['payment']==='cod'){
       res.json({
         codStatus: true
@@ -240,7 +242,6 @@ router.post('/place-order',async(req,res)=>{
     }
   })
 })
-
 
 router.get('/orderView',async(req,res)=>{
   if(req.session.user){
@@ -256,7 +257,6 @@ router.get('/orderView',async(req,res)=>{
   }
 })
 
-
 router.post('/verify-payment',(req,res)=>{
   productHelpers.verifyPayment(req.body).then(()=>{
     productHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
@@ -271,11 +271,39 @@ router.post('/verify-payment',(req,res)=>{
   })
 })
 
-router.get('/test',async(req,res)=>{
-  productHelpers.generateRazorpay()
+router.get('/paymentSuccessful',(req,res)=>{
+  res.render('users/ThankYouPage',{
+    css: 'user/navbar',
+    css1:'user/thankYouPage',
+  })
+})
+ 
+router.get('/addressManagement',async(req,res)=>{
+  let addresses = await userHelpers.getAddresses(req.session.user._id)
+  console.log('2addresses')
+  console.log(addresses)
+  res.render('users/address',{
+    css:'user/navbar',
+    css1:'user/address',
+    addresses : addresses,
+    user: req.session.user._id 
+  }) 
 })
 
+router.post('/newAddress/:id',(req,res)=>{
+  userHelpers.addAddress(req.params.id,req.body)
+  res.redirect('/addressManagement')
+})
  
+router.get('/deleteAddress/:id',(req,res)=>{
+  userHelpers.deleteAddress(req.params.id)
+  res.redirect('/addressManagement')
+})
+  
+
+router.get('/test',(req,res)=>{
+  userHelpers.deleteAddress('6216ff0bdf3c93b7de69da63',0)
+})
 module.exports = router;
 
 

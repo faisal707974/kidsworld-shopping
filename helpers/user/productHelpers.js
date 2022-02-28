@@ -17,9 +17,11 @@ module.exports = {
         })
     },
 
-    getProduct: async (id, callback) => {
-        let product = await db.get().collection('products').find({ _id: objectId(id) }).toArray()
-        callback(product)
+    getProduct: (id) => {
+        return new Promise(async(resolve,reject)=>{
+            let product = await db.get().collection('products').find({ _id: objectId(id) }).toArray()
+            resolve(product)
+        })
     },
  
     insertCart: async (userId, productId) => {
@@ -247,7 +249,7 @@ module.exports = {
                     products:1,
                     totalAmount:1,
                     status:1,
-                    date:1,
+                    date:{$dateToString:{format:'%d/%m/%Y',date:'$date'}},
                     product:{
                         $arrayElemAt :['$product',0]
                     }

@@ -55,6 +55,87 @@ module.exports = {
 
     imagesCount : async(callback)=>{
         // let count = await db.get().collection.('products').aggregate([{$project:{count:{$size:"$images"}}}])
+    },
+
+    getOrders :()=>{
+        return new Promise (async(resolve, reject)=>{
+            let orders = await db.get().collection('order').aggregate([
+                {
+                    $match:{}
+                },
+                {
+                    $project:{
+                        deliveryDetails:1,
+                        userId: 1,
+                        paymentMethod: 1,
+                        status:1,
+                        date:{$dateToString:{format:'%d/%m/%Y',date:'$date'}},
+                        products:1
+                    }
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $lookup:{
+                        from:'products',
+                        localField:'products.item',
+                        foreignField:'_id',
+                        as:'productDetails'
+                    }
+                },
+                {
+                    $lookup:{
+                        from:'users',
+                        localField:'userId',
+                        foreignField:'_id',
+                        as:'userDetails'
+                    }
+                },
+                {
+                    $project:{
+                        deliveryDetails:1,
+                        userId:1,
+                        paymentMethod:1,
+                        products:1,
+                        status:1,
+                        date:1,
+                        productDetails:{
+                            $arrayElemAt:['$productDetails',0]
+                        },  
+                        userDetails:{
+                            $arrayElemAt:['$userDetails',0]
+                        }
+                    }
+                }
+            ]).toArray()
+            resolve(orders)
+        })
+    },
+
+
+    changeStatus : (body)=>{
+        db.get().collection('order').updateOne({_id:objectId(body.orderId)},{
+            $set:{status:body.value}
+        })
+    },
+
+    deliveredOrder : async(body,callback)=>{
+       let order = await db.get().collection('order').aggregate([
+           {
+               $match:{
+                   _id:objectId(body.orderId)
+               }
+           },
+           {
+               $project:{
+                   _id:0
+               }
+           }
+        ]).toArray()
+       db.get().collection('delivered').insertOne(order[0])
+       db.get().collection('order').deleteOne({_id:objectId(body.orderId)})
+       callback()
     }
 
 

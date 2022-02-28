@@ -3,7 +3,8 @@ const res = require('express/lib/response');
 var router = express.Router();
 var productHelpers = require('../helpers/admin/productHelpers')
 const userManageHelpers = require('../helpers/admin/userManageHelpers')
-const fs = require('fs')
+const fs = require('fs');
+const { response } = require('express');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -32,7 +33,8 @@ router.get('/addProduct', (req, res) => {
     productManagement: 'active',
     css: 'admin/addProduct',
     css1: 'admin/navbar',
-    product: req.session.product
+    product: req.session.product,
+    js:'admin/validate'
   })
   req.session.product = null
 })
@@ -40,7 +42,7 @@ router.get('/addProduct', (req, res) => {
 router.post('/addProduct', (req, res) => {
 
   let imageArr = [];
-  if (req.files.files.length) {
+  if (req.files?.files.length) {
     for (var i = 0; i < req.files.files.length; i++) {
       imageArr.push(i)
     }
@@ -128,5 +130,23 @@ router.get('/unblockuser/:id',(req,res)=>{
   res.redirect('/admin/user-management')
 })
 
+router.get('/orders',async(req,res)=>{
+  let orders = await productHelpers.getOrders()
+  res.render('admin/Orders',{
+    css:'admin/Orders',
+    css1 : 'admin/navbar',
+    orders : orders
+  })
+})
 
+router.post('/changeStatus',(req,res)=>{
+  productHelpers.changeStatus(req.body)
+})
+
+router.post('/deliveredOrder',(req,res)=>{
+  console.log('reached delivered post')
+  productHelpers.deliveredOrder(req.body,()=>{
+    res.json({})
+  })
+})
 module.exports = router;

@@ -1,6 +1,6 @@
 const { response } = require('express')
-var db = require('../../config/connection')
-
+const db = require('../../config/connection')
+var objectId = require('mongodb').ObjectId
 
 module.exports = {
 
@@ -47,6 +47,31 @@ module.exports = {
                 resolve(response)
             })
         })
-    }
+    }, 
+
+ 
+    addAddress : (user,data)=>{
+        db.get().collection('address').insertOne({user:objectId(user),address:data}).then((response)=>{
+        })
+    },
+
+
+    getAddresses : (userId)=>{
+        return new Promise(async(resolve, reject)=>{
+            let addresses = await db.get().collection('address').find({user:objectId(userId),deleted:{$ne:true}}).toArray()
+            console.log('1addresses')
+            console.log(addresses)
+            resolve(addresses)
+        })
+    },
+
+
+    deleteAddress : (addressId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection('address').deleteOne({_id:objectId(addressId)}).then((response)=>{
+                resolve(response)
+            })
+        })
+    } 
 
 }

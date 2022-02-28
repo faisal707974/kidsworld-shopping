@@ -93,7 +93,7 @@
                                             style="display: flex; justify-content: flex-start; flex-direction: column-reverse;">
                                             <a href="/admin/product/{{this._id}}" data-method="delete"
                                                 onclick="return confirm('Are you sure to delete {{this.name}}?')">
-                                                <button style="margin: 3px; width: 95px;">
+                                                <button style="margin: 3px; width: 95px;" onclick="notify('{{this.name}} is deleted')">
                                                     Remove
                                                 </button>
                                             </a>
@@ -119,3 +119,5 @@
         </div>
     </div>
 </div>
+
+{{>notification}}

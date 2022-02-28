@@ -37,15 +37,15 @@
                                     <label for="">Email</label>
                                     <input name="email" type="email" class="form-control" value="{{user.email}}">
                                     <br>
-                                    <input type="submit" value="  save  ">
+                                    <input type="submit" value="  save  " onclick="notify('Your profile updated')">
 
                                 </form>
 
 
                             </div>
                             <div class="col" style="padding-left: 150px;font-size: 13pt;">
-                                <p>My orders</p>
-                                <p>Account settings</p>
+                                <p><a href="/orderView">My orders</a></p>
+                                <p><a href="/addressManagement">Account settings</a></p>
                                 <p>Manage Addresses</p>
                                 <p>Profile information</p>
                                 {{!-- <p>Notification preferences</p> --}}
@@ -67,3 +67,5 @@
         </div>
     </div>
 </div>
+
+{{>notification}}

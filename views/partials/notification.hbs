@@ -1,0 +1,98 @@
+<div class="notify_main">
+    <div class="notify_body" id="notificationBar" >
+        <div>
+            <svg class="animated-check" viewBox="0 0 24 24">
+                <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />
+            </svg>
+            <p id="notifyMsg"></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .notify_body {
+        background-color: rgb(48, 17, 17, .7);
+        color: white;
+        border: 2px solid black;
+        text-align: center;
+        width: 400px;
+        min-height: 40px;
+        position: fixed;
+        bottom: 0px;
+        left: auto;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+    }
+
+    .notify_main {
+        display: flex;
+        justify-content: center;
+    }
+
+    .notify_body div{
+        margin: auto;
+    }
+
+    .notify_body p {
+        margin: 10px;
+        display: inline;
+    }
+
+    .notify_body img {
+        width: 20px;
+    }
+
+
+    .animated-check {
+        height: 25px;
+        width: 25px;
+        background: -webkit-linear-gradient(180deg, #cf279a, #069ab9);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        white-space: nowrap;
+    }
+
+    .animated-check path {
+        fill: none;
+        stroke: #7ac142;
+        stroke-width: 4;
+        stroke-dasharray: 23;
+        stroke-dashoffset: 23;
+        animation: draw 1s linear forwards;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    @keyframes draw {
+        to {
+            stroke-dashoffset: 0
+        }
+    }
+#notificationBar{
+    visibility: hidden;
+    -webkit-animation: fadein 0.5s, fadeout 0.5 2.5s !important;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s !important;
+}
+    
+.show{
+    bottom: 25px;
+    visibility: visible !important;
+}
+
+</style>
+
+<script>
+     function notify(text) {
+        showNotify()
+        setTimeout(hideNotify, 1500)
+
+        function showNotify() {
+            document.getElementById('notificationBar').classList.add('show')
+            document.getElementById('notifyMsg').innerHTML = text
+        }
+        function hideNotify() {
+            document.getElementById('notificationBar').classList.remove('show')
+        }
+    }
+</script>

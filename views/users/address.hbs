@@ -1,0 +1,137 @@
+{{>user-navbar}}
+
+
+<div class="cartMain">
+    <div class="container">
+        <div class="row">
+            <div class="col cartProducts">
+                <div class="cartTable">
+
+
+
+                    <div>
+                        <h4>Address Management</h4>
+                        <hr>
+                    </div>
+                    <div style="overflow: auto; height: 400px;">
+                        <div class="row" style="line-height: 20px;width: 973px;">
+                            <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                            <span>
+                                                <i class="fa fa-plus"></i>
+                                                Add New Address
+                                            </span>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse"
+                                        aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <form action="/newAddress/{{user}}" method="post" class="container"
+                                                id="checkout-form">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="name">Name</label>
+                                                        <input type="text" name="name" id="name" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="mobile">Mobile Number</label>
+                                                        <input type="text" name="mobile" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="pin">Pin Code</label>
+                                                        <input type="text" name="pin" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="locality">Locality</label>
+                                                        <input type="text" name="locality" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="">Address</label>
+                                                        <input type="text" name="address" class="form-control"
+                                                            style="height: 70px;">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="town">City/District/Town</label>
+                                                        <input type="text" name="town" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="state">State</label>
+                                                        <input type="text" name="state" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button type="submit" style="width: 200px; height: 30px;">Save
+                                                            Address</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {{#each addresses}}
+
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                   
+                                    <div id="collapse{{@index}}" class=""
+                                        aria-labelledby="heading{{@index}}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div id="deliveryPortion">
+                                                <section class="container" id="checkout-form">
+                                                    <div class="row">
+                                                       
+                                                            <strong>
+                                                            {{this.address.name}} - {{this.address.mobile}}
+                                                            </strong>
+                                                        
+                                                    </div>
+                                                    <div class="row">
+                                                        <p>
+                                                            {{this.address.address}}, {{this.address.locality}},{{this.address.town}}, {{this.address.state}} - {{this.address.pin}}
+                                                        </p>
+                                                    </div>
+                                                </section>
+                                                <div style="display: flex;"><a style="margin-left: auto;" href="/deleteAddress/{{this._id}}">Delete</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/each}}
+
+                                
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>notification}}

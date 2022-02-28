@@ -1,0 +1,120 @@
+{{>admin-navbar}}
+<div class="main-div">
+    <div class="container">
+        <div class="row">
+            <div class="field-div Order_management">
+                <div class="d-flex justify-content-between">
+                    <h3 class="main_head">Orders</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Delivery_Status</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="product-overflow-div" style="height: 400px; width: 100%; overflow: auto;">
+                    <table>
+                        <tbody>
+                            {{#each orders}}
+                            <tr>
+                                <td>{{@index}}</td>
+                                <td>{{this.userDetails.mobile}}</td>
+                                <td>{{this.productDetails.name}}</td>
+                                <td>{{this.products.quantity}}</td>
+                                <td>{{this.date}}</td>
+                                <td>{{this.paymentMethod}}</td>
+                                <td>{{this.products.total}}</td>
+                                <td>
+                                    <select name="" class="unique" onchange="changeStatus(this.value,'{{this._id}}')">
+                                        <option id="currentStatus{{this._id}}" value="" hidden>{{this.status}}</option>
+                                        <option class="O_cancel{{this._id}}" value="Processing">Processing</option>
+                                        <option class="O_cancel{{this._id}}" value="Shipped">Shipped</option>
+                                        <option class="O_cancel{{this._id}}" value="Delivered">Delivered</option>
+                                        <option class="O_cancel{{this._id}}" value="Cancelled">Cancel</option>
+                                    </select>
+                                    <option id="currentId{{@index}}" value="Cancelled" hidden>{{this._id}}</option>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>notification}}
+
+
+<script>
+
+    function changeStatus(value, orderId) {
+        $.ajax({
+            url: '/admin/changeStatus',
+            data: {
+                value: value,
+                orderId: orderId
+            },
+            method: 'post',
+            success: (response) => {
+
+            }
+        })
+
+        if (value == 'Delivered') {
+            $.ajax({
+                url: '/admin/deliveredOrder',
+                data: {
+                    orderId: orderId
+                },
+                method: 'post',
+                success: () => {
+                    window.location.href = '/admin/Orders'
+                }
+            })
+        }
+
+        if (value == 'Cancelled') {
+            let O_cancel = document.querySelectorAll('.O_cancel')
+            for (var i = 0; i < O_cancel.length; i++) {
+                O_cancel[i].hidden = true
+            }
+            location.href = '/admin/Orders'
+        }
+    }
+
+    function ifCancel() {
+
+        let unique = document.getElementsByClassName('unique').length
+        for (var j = 0; j < unique; j++) {
+            let forId = 'currentId' + j
+            let id = document.getElementById(forId).textContent
+            let newId = 'currentStatus' + id
+            let value = document.getElementById('currentStatus' + id).textContent
+
+            if (value == 'Cancelled') {
+                let O_cancel = document.querySelectorAll('.O_cancel' + id)
+                for (var i = 0; i < O_cancel.length; i++) {
+                    O_cancel[i].hidden = true
+                }
+            }
+        }
+
+    }
+    ifCancel()
+
+</script>

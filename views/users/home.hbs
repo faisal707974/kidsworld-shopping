@@ -1,5 +1,4 @@
 {{>user-navbar}}
-
 {{!-- Head --}}
 <div class="d-flex justify-content-center">
     <img class="home-image" src="/images/Little-boy-play-toys-child_2560x1600.jpg" alt="">
@@ -114,7 +113,8 @@
                             <div class="btn1">View</div>
                         </a>
                         <p>
-                            <div class="btn2" style="cursor: pointer;" onclick="addToCart('{{this._id}}')">Add cart</div>
+                        <div class="btn2" style="cursor: pointer;" onclick="addToCart('{{this._id}}')">Add cart
+                        </div>
                         </p>
                     </div>
                 </div>
@@ -131,23 +131,26 @@
     </div>
 </div>
 
-
+{{>notification}}
 <script>
 
-    function addToCart(prodId){
+    function addToCart(prodId) {
         $.ajax({
-            url: '/addCart/'+prodId,
-            method : 'get',
-            success : (response)=>{
-                if(response.status){
+            url: '/addCart/' + prodId,
+            method: 'get',
+            success: (response) => {
+                if (response.status) {
                     let count = $('#cartCount').html()
-                    count = parseInt(count)+1
+                    count = parseInt(count) + 1
                     $('#cartCount').html(count)
-                }else{
+                    notify(response.product+' added to your cart')
+                } else {
                     window.location.href = '/login'
                 }
             }
         })
     }
+
+   
 
 </script>

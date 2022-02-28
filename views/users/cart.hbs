@@ -57,7 +57,7 @@
                                     </tr>
                                     <tr class="cart-endrow">
                                         <td colspan="3" class="text-align-right cart-mng-buttons">
-                                            <button onclick="deleteCartItem('{{this.product._id}}','{{this._id}}')"
+                                            <button onclick="deleteCartItem('{{this.product._id}}','{{this._id}}'),notify('{{this.product.name}} is deleted from your cart')"
                                                 class="remove fa fa-trash-o">
                                             </button>
 
@@ -186,7 +186,7 @@
     </div>
 </div>
 
-
+{{>notification}}
 
 <script>
 
@@ -248,7 +248,9 @@
             },
             success: (response) => {
                 if (response.status) {
+                    setTimeout(
                     window.location.href = '/cart'
+                    ,3000)
                 }
             }
         })
@@ -269,7 +271,7 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
                 if (response.codStatus) {
-                    location.href = "/cart?codStatus=true"
+                    location.href = "/paymentSuccessful"
                 } else {
                     razorpayPayment(response)
                 }
@@ -287,10 +289,6 @@
             "image": "https://example.com/your_logo",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature)
-
                 verifyPayment(response,order)
             },
             "prefill": {
@@ -319,9 +317,9 @@
             method:'post',
             success:(response)=>{
                 if(response.status){
-                    alert('payment success')
+                    location.href = '/paymentSuccessful'
                 }else{
-                    alert('payment failed')
+                    alert('Payment failed')
                 }
             }
         })

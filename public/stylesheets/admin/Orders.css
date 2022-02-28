@@ -1,0 +1,46 @@
+.main-div{
+    height: 89vh;
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+}
+.field-div{
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+
+.product-overflow-div::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+
+
+.Order_management th,
+.Order_management td {
+    width: 149px;
+    border-left: 1px black solid;
+    text-align: center;
+}
+.Order_management td{
+    border-left: none;
+    height: 40px;
+}
+
+.Order_management th:nth-child(1),
+.Order_management td:nth-child(1){
+    width: 40px;
+}
+
+.Order_management select option{
+    border: none;
+    background-color: none;
+}
+.Order_management tbody tr:nth-child(odd){
+    background-color: #7ac6f14b;
+}
+.Order_management tbody tr:nth-child(even){
+    /* background-color: #f396da; */
+}
