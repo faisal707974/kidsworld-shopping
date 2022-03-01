@@ -1,3 +1,4 @@
+{{>imageCrop}}
 {{>admin-navbar}}
 
 
@@ -32,7 +33,7 @@
                                         <span id="errName"></span>
                                     </p>
                                     <textarea name="name" type="text" class="form-control bigInputs"
-                                        onblur="validate({username:true,id:'username'})"
+                                        {{!-- onblur="validate({username:true,id:'username'})" --}}
                                         id="username">{{product.name}}</textarea>
                                     <br>
                                     <p>
@@ -40,12 +41,12 @@
                                         <span id="errDesc"></span>
                                     </p>
                                     <textarea name="description" type="textarea" class="form-control bigInputs"
-                                        onblur="validate({description:true,id:'description'})"
+                                        {{!-- onblur="validate({description:true,id:'description'})" --}}
                                         id="description">{{product.description}}</textarea>
 
                                     <div class="imgBoxP2 ">
                                         <label class="mx-auto d-inline">Images</label>
-                                        <label for="files" class="addimagebtn">Add new image</label>
+                                        <label for="files" id="newImage" class="addimagebtn">Add new image</label>
                                         <input type="file" name="files" id="files" style="display:none" multiple
                                             onchange="imagechange(event)">
 
@@ -63,6 +64,7 @@
                                                         let image = document.createElement('img');
                                                         image.src = '/images/products/' + id + '/' + i + '.jpg'
                                                         image.id = 'productimage' + i
+                                                       
                                                         let newdiv = document.getElementById('imagediv' + i)
                                                         newdiv.appendChild(image)
 
@@ -218,8 +220,11 @@
             let image = document.createElement('img');
             image.src = URL.createObjectURL(event.target.files[i])
             image.id = 'productimage' + i
+            image.style = 'cursor:pointer'
             let newdiv = document.getElementById('imagediv' + i)
             newdiv.appendChild(image)
+
+            document.getElementById('productimage'+i).onclick = function (){crop(event) }
 
             let itag = document.createElement('i')
             itag.className = "fa fa-close close"
@@ -227,6 +232,8 @@
         }
 
     }
+
+   
 
 
     var closebtns = document.getElementsByClassName("close");

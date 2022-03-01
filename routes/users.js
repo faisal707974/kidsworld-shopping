@@ -136,13 +136,15 @@ async function cartPage (req, res){
     let cartProducts = await productHelpers.getCartProducts(req.session.user._id)
     let count =  await productHelpers.cartProductsCount(req.session.user._id)
     let cartTotal = await productHelpers.cartTotal(req.session.user._id)
+    let addresses = await userHelpers.getAddresses(req.session.user._id)
      res.render('users/cart', {
        css: 'user/navbar',
        css1: 'user/cart',
        products: cartProducts,
        count:count[0]?.products.length,
        cartTotal : cartTotal[0]?.total,
-       user: req.session.user
+       user: req.session.user,
+       addresses : addresses
       })
     }
 }
@@ -302,7 +304,7 @@ router.get('/deleteAddress/:id',(req,res)=>{
   
 
 router.get('/test',(req,res)=>{
-  userHelpers.deleteAddress('6216ff0bdf3c93b7de69da63',0)
+  
 })
 module.exports = router;
 

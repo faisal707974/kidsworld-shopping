@@ -34,7 +34,9 @@ router.get('/addProduct', (req, res) => {
     css: 'admin/addProduct',
     css1: 'admin/navbar',
     product: req.session.product,
-    js:'admin/validate'
+    js:'admin/validate',
+    js1:'admin/newcrop'
+
   })
   req.session.product = null
 })
@@ -118,7 +120,7 @@ router.get('/user-management', (req, res) => {
     })
   })
 })
-
+ 
 
 router.get('/blockuser/:id',(req,res)=>{
   userManageHelpers.blockuser(req.params.id)

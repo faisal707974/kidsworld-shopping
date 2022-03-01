@@ -57,7 +57,8 @@
                                     </tr>
                                     <tr class="cart-endrow">
                                         <td colspan="3" class="text-align-right cart-mng-buttons">
-                                            <button onclick="deleteCartItem('{{this.product._id}}','{{this._id}}'),notify('{{this.product.name}} is deleted from your cart')"
+                                            <button
+                                                onclick="deleteCartItem('{{this.product._id}}','{{this._id}}'),notify('{{this.product.name}} is deleted from your cart')"
                                                 class="remove fa fa-trash-o">
                                             </button>
 
@@ -86,42 +87,25 @@
                         <hr>
 
                         <form action="" class="container" id="checkout-form">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control">
+                            {{#each addresses}}
+                            <section class="container" id="checkout-form">
+                                <input type="radio" name="address" value="{{this._id}}">
+                                <div class="row">
+
+                                    <strong>
+                                        {{this.address.name}} - {{this.address.mobile}}
+                                    </strong>
+
                                 </div>
-                                <div class="col">
-                                    <label for="mobile">Mobile Number</label>
-                                    <input type="text" name="mobile" class="form-control">
+                                <div class="row">
+                                    
+                                    <p>
+                                        {{this.address.address}}, {{this.address.locality}},{{this.address.town}},
+                                        {{this.address.state}} - {{this.address.pin}}
+                                    </p>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="pin">Pin Code</label>
-                                    <input type="text" name="pin" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="locality">Locality</label>
-                                    <input type="text" name="locality" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="">Address</label>
-                                    <input type="text" name="address" class="form-control" style="height: 70px;">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="town">City/District/Town</label>
-                                    <input type="text" name="town" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="state">State</label>
-                                    <input type="text" name="state" class="form-control">
-                                </div>
-                            </div>
+                            </section>
+                            {{/each}}
                             <br>
                             <div class="row">
                                 <div class="col">
@@ -249,8 +233,8 @@
             success: (response) => {
                 if (response.status) {
                     setTimeout(
-                    window.location.href = '/cart'
-                    ,3000)
+                        window.location.href = '/cart'
+                        , 3000)
                 }
             }
         })
@@ -289,7 +273,7 @@
             "image": "https://example.com/your_logo",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                verifyPayment(response,order)
+                verifyPayment(response, order)
             },
             "prefill": {
                 "name": "Gaurav Kumar",
@@ -307,18 +291,18 @@
         rzp1.open();
     }
 
-    function verifyPayment(payment,order){
+    function verifyPayment(payment, order) {
         $.ajax({
-            url:'/verify-payment',
-            data:{
+            url: '/verify-payment',
+            data: {
                 payment,
                 order
             },
-            method:'post',
-            success:(response)=>{
-                if(response.status){
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
                     location.href = '/paymentSuccessful'
-                }else{
+                } else {
                     alert('Payment failed')
                 }
             }
