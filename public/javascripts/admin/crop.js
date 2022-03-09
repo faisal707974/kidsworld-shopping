@@ -18,6 +18,7 @@ function imagesPreview(input) {
                 var blobUrl = event.target.result;
                 img.push(new Image());
                 img[i].onload = function (e) {
+                    document.getElementById('imgcrop').hidden = false
                     // Canvas Container
                     var singleCanvasImageContainer = document.createElement('div');
                     singleCanvasImageContainer.id = 'singleImageCanvasContainer' + index;
@@ -188,3 +189,12 @@ function urlConversion() {
         return true;
 
   }
+
+
+  $('#imgcrop').on('click', function(e) {
+    console.log(e.target)
+    if (e.target !== this)
+    return;
+    
+    imgcrop.hidden=true
+  });

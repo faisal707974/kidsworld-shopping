@@ -59,8 +59,6 @@ module.exports = {
     getAddresses : (userId)=>{
         return new Promise(async(resolve, reject)=>{
             let addresses = await db.get().collection('address').find({user:objectId(userId),deleted:{$ne:true}}).toArray()
-            console.log('1addresses')
-            console.log(addresses)
             resolve(addresses)
         })
     },

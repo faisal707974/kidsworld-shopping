@@ -1,0 +1,41 @@
+<script>
+    var booleanSubmitted = false;
+    var booleanFocused = false;
+    
+    function validateSubmit() {
+        if (booleanFocused) {
+            booleanSubmitted = true;
+            return false;
+        }
+        booleanSubmitted = false;
+        return true;
+    }
+    
+    function focusSet() {
+        booleanSubmitted = false;
+        booleanFocused = true;
+    }
+    
+    function validateBlur(ref) {
+        if (ref.testField.value == '') {
+            // invalid, refocus form field
+            ref.testField.focus();
+        }
+        else {
+            // valid, clear boolean
+            booleanFocused = false;
+            // test for submit
+            if (booleanSubmitted) {
+                // clear boolean
+                booleanSubmitted = false;
+                // submit form again (doesn't trigger onSubmit)
+                ref.submit();
+            }
+        }
+    }
+    </script>
+    
+    <form name="testForm" onSubmit="return validateSubmit()">
+    <input name="testField" type="text" onFocus="focusSet()" onBlur="validateBlur(this.form)">
+    <input type="submit">
+    </form>

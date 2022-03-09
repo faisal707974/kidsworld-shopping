@@ -1,0 +1,22 @@
+.main-div{
+    height: 89vh;
+    background-image: url('/images/wallpaperflare.com_wallpaper.jpg');
+}
+.field-div{
+    background-color: white;
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    height: 500px;
+}
+
+
+.product-overflow-div::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.report_management th{
+    width : 140px
+}

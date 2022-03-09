@@ -1,0 +1,68 @@
+{{>admin-navbar}}
+<div class="main-div">
+    <div class="container">
+        <div class="row">
+            <div class="field-div Offer_management">
+                <div class="d-flex justify-content-between">
+                    <h3 class="main_head">Offers</h3>
+                </div>
+                <div>
+                    <h6>Add coupon</h6>
+                    <form action="/admin/addCoupon" method="post">
+                        <label for="">Coupon code</label>
+                        <input name='code' type="text">
+                        <label for="">Discount (%)</label>
+                        <input name="discount" type="text">
+                        <input type="submit">
+                    </form>
+                </div>
+                <hr>
+                <div>
+                    <table>
+                        <thead>
+
+                            <tr>
+                                <th>Coupon Code</th>
+                                <th>Discount</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+                    </table>
+                    <table>
+                        <tbody>
+                            {{#each coupons}}
+                            <tr>
+                                <td>{{this.code}}</td>
+                                <td>{{this.discount}}</td>
+                                <td>
+                                    <div class="btn btn-secondary" onclick="removeCoupon('{{this._id}}')" id="removeCoupon" style="height: 30px; padding: 0; width: 60px;">
+                                        <p>Remove</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>notification}}
+
+<script>
+    function removeCoupon(id){
+        $.ajax({
+            url:'/admin/removeCoupon',
+            data:{
+                id:id
+            },
+            method:'post',
+            success:(response)=>{
+              location.href = '/admin/Offers'
+            }
+        })
+    }
+</script>

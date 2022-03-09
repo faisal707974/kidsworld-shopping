@@ -7,12 +7,14 @@ const accountSid = 'ACe7bc5c1bcc58d49a73aba31992667ace'; // Your Account SID fro
 const authToken = 'b6afb1bd2447e30773fdf7895e8c80ae'; // Your Auth Token from www.twilio.com/console
 
 const twilio = require('twilio');
+const { response } = require('express');
 const client = new twilio(accountSid, authToken);
 
 
 // {----- Home page -----}
 
 router.get('/', async function (req, res, next) {
+
   let cartCount
   if(req.session.user){
     cartCount = await productHelpers.cartCount(req.session.user._id)
@@ -69,7 +71,7 @@ router.get('/otpRequest', (req, res, next) => {
         req.session.userExist = true;
         req.session.user = response
         res.render('users/otpVerify', {
-          css: 'user/loginLayout',
+          css: 'user/loginLayout', 
           number: mobileNumber,
           userExist: true
         })
@@ -174,7 +176,7 @@ function profilePage (req, res){
 
 
 router.get('/viewProduct/:id', (req, res) => {
-  productHelpers.getProduct(req.params.id, (data) => {
+  productHelpers.getProduct(req.params.id).then((data) => {
     res.render('users/viewProduct', {
       css: 'user/navbar',
       css1: 'user/viewProduct',
@@ -194,7 +196,6 @@ router.post('/updateUser', (req, res) => {
 
 router.get('/addcart/:id', async(req, res) => {
   let product = await productHelpers.getProduct(req.params.id)
-  console.log(product)
   if (req.session.user) {
     let userId = req.session.user._id
     productHelpers.insertCart(userId, req.params.id)
@@ -206,15 +207,15 @@ router.get('/addcart/:id', async(req, res) => {
 
 
 router.post('/change-product-quantity',async (req,res)=>{
-  let cartTotal = await productHelpers.cartTotal(req.session.user._id)
   let response = await productHelpers.changeProductQuantity(req.body)
+  productHelpers.changeProductTotalPrice(req.body)
+  let cartTotal = await productHelpers.cartTotal(req.session.user._id)
   if(response==1){
     res.json({
       status : true,
       cartTotal : cartTotal[0].total
     }) 
   }
-  productHelpers.changeProductTotalPrice(req.body)
 })
 
 
@@ -227,24 +228,48 @@ router.post('/deleteCartItem',(req,res)=>{
   })
 })
 
-
-router.post('/place-order',async(req,res)=>{
-  let products = await productHelpers.getCartProductList(req.body.userId)
-  let totalPrice = await productHelpers.cartTotal(req.session.user._id)
-  productHelpers.placeOrder(req.body,products,totalPrice[0]?.total).then((orderId)=>{
-    if(req.body['payment']==='cod'){
-      res.json({
-        codStatus: true
-      })
+router.post('/redeemcoupon',(req,res)=>{
+  productHelpers.checkCoupon(req.body.coupon_code,req.session.user._id).then((response)=>{
+    if(response){
+      res.json({discount:response.discount})
+      productHelpers.add_user_to_coupon(req.session.user._id,response._id)
+      console.log(response)
     }else{
-      
-      productHelpers.generateRazorpay(orderId,totalPrice[0].total).then((response)=>{
-        res.json(response)
-      })
+      res.json(null)
+      console.log('resfalse')
     }
   })
 })
 
+
+router.post('/place_order',async(req,res)=>{
+  let products = await productHelpers.getCartProductList(req.body.userId)
+  // let totalPrice = await productHelpers.cartTotal(req.session.user._id)
+
+  console.log('req.body')
+  console.log(req.body)
+  productHelpers.placeOrder(req.body,products,req.body.GrandTotal).then((orderId)=>{
+    if(req.body.payment ==='cod'){
+      console.log('cod if')
+      res.json({
+        codStatus: true
+      })
+    }else if(req.body.payment === 'razorpay'){ 
+      console.log('razorpay if')
+      productHelpers.generateRazorpay(orderId,req.body.GrandTotal).then((response)=>{
+        res.json(response)
+      })
+    }else if(req.body.payment === 'paypal'){ 
+      console.log('paypal if')
+      res.json({
+        status:true
+      })
+    }else{
+      res.send('final else')
+    }
+  })
+})
+  
 router.get('/orderView',async(req,res)=>{
   if(req.session.user){
     let orders = await productHelpers.getOrders(req.session.user._id)
@@ -259,6 +284,11 @@ router.get('/orderView',async(req,res)=>{
   }
 })
 
+
+router.get('/cancelOrder',(req,res)=>{
+  productHelpers.cancelOrder()
+})
+
 router.post('/verify-payment',(req,res)=>{
   productHelpers.verifyPayment(req.body).then(()=>{
     productHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
@@ -270,6 +300,7 @@ router.post('/verify-payment',(req,res)=>{
         status: false
       })
     })
+    // productHelpers.reduceProductCount(req.body['order[receipt]'])
   })
 })
 
@@ -304,8 +335,23 @@ router.get('/deleteAddress/:id',(req,res)=>{
   
 
 router.get('/test',(req,res)=>{
+  function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+    for (var i = 0; i < 20; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
+  }
+  
+  console.log(makeid());
+
   
 })
+
+
+
 module.exports = router;
 
 

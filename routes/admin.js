@@ -1,5 +1,4 @@
 var express = require('express');
-const res = require('express/lib/response');
 var router = express.Router();
 var productHelpers = require('../helpers/admin/productHelpers')
 const userManageHelpers = require('../helpers/admin/userManageHelpers')
@@ -7,12 +6,25 @@ const fs = require('fs');
 const { response } = require('express');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/',async function (req, res, next) {
+
+  let compReport = await productHelpers.get_complete_report()
+  let monthReport = await productHelpers.get_thisMonth_report()
+  let salesPerMonth = await productHelpers.salesPerMonth()
+  let orderStatus = await productHelpers.orderStatus()
+  let todayOrderCount = await productHelpers.todayOrderCount()
+  console.log(salesPerMonth)
+  console.log(new Date().toLocaleString('en-us',{month:'short'}))
   res.render('admin/admin', {
     admin: true,
     dashboard: 'active',
     css: 'admin/home',
-    css1: 'admin/navbar'
+    css1: 'admin/navbar',
+    compReport,
+    monthReport,
+    salesPerMonth,
+    orderStatus,
+    todayOrderCount
   });
 });
 
@@ -141,14 +153,66 @@ router.get('/orders',async(req,res)=>{
   })
 })
 
+router.get('/offers',async(req,res)=>{
+  let coupons = await productHelpers.getCoupons()
+  console.log(coupons)
+  res.render('admin/Offers',{
+    css:'admin/Offers',
+    css1:'admin/navbar',
+    coupons
+  })
+})
+
 router.post('/changeStatus',(req,res)=>{
   productHelpers.changeStatus(req.body)
 })
 
 router.post('/deliveredOrder',(req,res)=>{
-  console.log('reached delivered post')
   productHelpers.deliveredOrder(req.body,()=>{
     res.json({})
   })
 })
+
+
+router.post('/addCoupon',(req,res)=>{
+  productHelpers.addCoupon(req.body)
+  res.redirect('/admin/Offers')
+})
+
+router.post('/removeCoupon',(req,res)=>{
+  productHelpers.removeCoupon(req.body.id,(response)=>{
+    res.json({})
+  })
+})
+
+router.get('/reports',(req,res)=>{
+  productHelpers.getdelivereds().then((data)=>{
+    res.render('admin/reports',{
+      css:'admin/navbar',
+      css1:'admin/reports',
+      data
+  })
+  })
+})
+
+router.post('/salesreport/report', async (req, res) => {
+  let salesReport = await productHelpers.getSalesReport(req.body.from, req.body.to)
+  console.log({salesReport})
+  res.json({ report: salesReport })
+})
+
+router.post('/salesreport/monthlyreport', async (req, res) => {
+  let singleReport = await productHelpers.getNewSalesReport(req.body.type)
+  res.json({ wmyreport: singleReport })
+})
+
+router.get('/salesreport', async (req, res) => {
+  let salesreport = await productHelpers.getsalesReport()
+  res.render('admin/salesreport', { admin: true, salesreport })
+})
+  
+
+
+
+
 module.exports = router;

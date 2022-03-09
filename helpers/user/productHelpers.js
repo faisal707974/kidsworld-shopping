@@ -8,6 +8,8 @@ var instance = new Razorpay({
     key_secret: 'x4IpIj3SjfGXCgPCmEl8Jr75',
   });
 
+ 
+
 module.exports = {
 
     getProducts: () => {
@@ -191,8 +193,6 @@ module.exports = {
     },
 
     placeOrder : (order,products,totalPrice)=>{
-        console.log('order')
-        console.log(order)
         return new Promise ((resolve,reject)=>{
             let status =  order.payment==='cod'?'placed':'pending'
             let orderObj = {
@@ -206,11 +206,12 @@ module.exports = {
                 products:products,
                 totalAmount:totalPrice,
                 status: status,
-                date: new Date()
+                date: new Date().toString()
             }
 
             db.get().collection('order').insertOne(orderObj).then((response)=>{
                 db.get().collection('cart').deleteOne({user:order.userId})
+                console.log('ordered and cart deleted')
                 resolve(response.insertedId.toString())
             })
         })
@@ -235,7 +236,7 @@ module.exports = {
                },
                {
                    $unwind:'$products'
-               },
+               }, 
                {
                    $lookup:{
                        from:'products',
@@ -251,7 +252,7 @@ module.exports = {
                     products:1,
                     totalAmount:1,
                     status:1,
-                    date:{$dateToString:{format:'%d/%m/%Y',date:'$date'}},
+                    // date:{$dateToString:{format:'%d/%m/%Y',date:'$date'}},
                     product:{
                         $arrayElemAt :['$product',0]
                     }
@@ -296,7 +297,7 @@ module.exports = {
             }
         })
     },
-
+    
     changePaymentStatus : (orderId)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection('order').updateOne({_id:objectId(orderId)},
@@ -308,7 +309,29 @@ module.exports = {
                 resolve()
             })
         })
-    } 
+    },
+
+    // reduceProductCount : (orderId)=>{
+    //     db.get().collection('products').updateOne({})
+    // }
+
+
+    cancelOrder : ()=>{
+        db.get().collection('order').upadateOne({_id:objectId(orderId)})
+    },
+
+
+    checkCoupon : (code,userId)=>{
+        return new Promise((resolve,reject)=>{
+           db.get().collection('coupon').findOne({code:code,users:{$ne:userId}}).then((response)=>{
+               resolve(response)
+           })
+        })
+    },
+
+    add_user_to_coupon : (userId,couponId)=>{
+        db.get().collection('coupon').updateOne({_id:objectId(couponId)},{$push:{users:userId}})
+    }
 
 
 }

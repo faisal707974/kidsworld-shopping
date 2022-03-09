@@ -87,9 +87,10 @@
                         <hr>
 
                         <form action="" class="container" id="checkout-form">
+                            <a href="/addressManagement" class="btn btn-primary ms-auto">Add New Address</a>
                             {{#each addresses}}
                             <section class="container" id="checkout-form">
-                                <input type="radio" name="address" value="{{this._id}}">
+                                <input type="radio" name="address" value="{{this._id}}" checked>
                                 <div class="row">
 
                                     <strong>
@@ -98,7 +99,7 @@
 
                                 </div>
                                 <div class="row">
-                                    
+
                                     <p>
                                         {{this.address.address}}, {{this.address.locality}},{{this.address.town}},
                                         {{this.address.state}} - {{this.address.pin}}
@@ -107,21 +108,46 @@
                             </section>
                             {{/each}}
                             <br>
+                            <input type="text" id="grandTotalInput" name="GrandTotal" hidden>
                             <div class="row">
                                 <div class="col">
-                                    <input type="radio" name="payment" value="cod" checked>
+                                    <input type="radio" name="payment" id="cod" value="cod" checked>
                                     <label for="">COD Payment</label>
 
-                                    <input type="radio" name="payment" value="online">
+                                    <input type="radio" name="payment" id="onlinePayment" value="razorpay">
                                     <label for="">Online Payment</label>
+
+                                </div>
+                                <div id="onlinePay" style="display:flex; justify-content:space-evenly; margin-top:33px">
+
+                                    <button type="submit"
+                                        style="width:223px; height:81px; background-color:blue; display: inline-block;
+                                    margin-top:0; border-radius:6px; display: flex; justify-content: center; align-items: center;">
+                                        <img style="width: 100px; backgroud-color: blue;border-radius: 5px;"
+                                            src="/images/png-clipart-india-payment-gateway-razorpay-startup-company-india-company-text.png">
+                                    </button>
+                                    <div id="paypal" style="width: 223px; display: inline-block;"></div>
                                 </div>
                             </div>
+                            <script>
+                                $('#onlinePay').hide()
+                                $('#cod').on('change', () => {
+                                    $('#onlinePay').hide()
+                                    $('#cod_submit_btn').show()
+                                })
+                                $('#onlinePayment').on('change', () => {
+                                    $('#onlinePay').show()
+                                    $('#cod_submit_btn').hide()
+                                })
+
+
+                            </script>
+
                             <br>
                             <input type="text" name="userId" value="{{user._id}}" hidden>
                             <div class="row">
-                                <div class="col">
-                                    <button type="submit" style="width: 200px; height: 30px;">Save and Deliver
-                                        here</button>
+                                <div class="col" id="cod_submit_btn">
+                                    <button type="submit" style="width: 200px; height: 30px;">Place Order</button>
                                 </div>
                             </div>
                         </form>
@@ -144,11 +170,11 @@
                     <table>
                         <tr>
                             <td>Price (3 items)</td>
-                            <td id="cartTotal{{this.product._id}}">{{cartTotal}}</td>
+                            <td id="cartTotal">{{cartTotal}}</td>
                         </tr>
                         <tr>
                             <td>Discount</td>
-                            <td>00.0</td>
+                            <td id="discountAmnt">00.0</td>
                         </tr>
                         <tr>
                             <td>Delivery Charges</td>
@@ -156,12 +182,56 @@
                         </tr>
                         <tr style="font-weight: bolder; border-top: 1px solid rgb(212, 208, 208);">
                             <td style="font-size: 18pt;">Total Amount</td>
-                            <td style="font-size: 18pt;" id="cartFinalTotal{{this.product._id}}">{{cartTotal}}</td>
+                            <td style="font-size: 18pt;" id="cartFinalTotal"></td>
                         </tr>
                     </table>
+                        <script>
+                            let total = $('#cartTotal').html()
+                            let discount = $('#discountAmnt').html()
+                            $('#cartFinalTotal').html(total-discount)
+                        </script>
+                    <div class="couponDiv">
+                        <form action="/redeemcoupon" method="POST" id="couponForm" hidden>
+                            <input type="text" name="coupon_code" id="couponInput">
+                            <input type="submit" value="Apply Coupon">
+                            <p id="couponErr"></p>
+                        </form>
+                    </div>
+                    <script>
+                        $('#couponForm').submit((event)=>{
+                            event.preventDefault()
+                            $.ajax({
+                                url:'/redeemcoupon',
+                                data: $('#couponForm').serialize(),
+                                method:'post',
+                                success:(response)=>{
+                                    if(response){
+                                        let total = $('#cartTotal').html()
+                                        let discount = (response.discount*total)/100
+                                        $('#discountAmnt').html(discount)
+                                        let grandTotal = total-discount
+                                        $('#cartFinalTotal').html(grandTotal.toFixed(2))
+                                        $('#couponErr').html('The coupon is applied')
+                                        
+                                        setTimeout(function(){
+                                            timeout('#couponErr')
+                                            $('#couponInput').val('')
+                                            } ,2000)
+                                    }else{
+                                        $('#couponErr').html('The coupon is not valid')
+                                        setTimeout(function (){timeout('#couponErr')},2000)
+                                    }
+                                }
+                            })
+                        })
+
+                        function timeout (id){
+                            $(id).html('')
+                        }
+                    </script>
                     <div>
                         <button class="placeorder" onclick="placeOrder()" id="placeOrderButton">
-                            PLACE ORDER
+                            Check Out
                         </button>
                     </div>
                 </div>
@@ -212,7 +282,8 @@
                     $(id).html(quantity)
 
                     $(totalId).html(total)
-
+                    console.log('quantity added')
+                    console.log(response)
                     document.getElementById('cartTotal').innerHTML = response.cartTotal
                     document.getElementById('cartFinalTotal').innerHTML = response.cartTotal
 
@@ -245,12 +316,15 @@
         document.getElementById('cartPortion').hidden = true
         document.getElementById('deliveryPortion').hidden = false
         document.getElementById('placeOrderButton').hidden = true
+        document.getElementById('couponForm').hidden = false
     }
 
     $("#checkout-form").submit((e) => {
         e.preventDefault()
+        let grandTotal = $('#cartFinalTotal').html()
+        $('#grandTotalInput').val(grandTotal)
         $.ajax({
-            url: '/place-order',
+            url: '/place_order',
             method: 'post',
             data: $('#checkout-form').serialize(),
             success: (response) => {
@@ -308,5 +382,44 @@
             }
         })
     }
+
+
+
+
+
+
+
+
+    const amount = $('#cartFinalTotal').html()
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount
+                    }
+                }]
+            });
+        },
+        onApprove: function (data, actions) {
+            $('#onlinePayment').val('paypal')
+            const form_data = $('#checkout-form').serialize()
+            return actions.order.capture().then(function (details) {
+                $.ajax({
+                    url: '/place_order',
+                    method: 'post',
+                    data: form_data,
+                    success: (response) => {
+                        location.href = "/paymentSuccessful"
+                    }
+                })
+            });
+        }
+    }).render('#paypal');
+
+
+
+
+
 
 </script>

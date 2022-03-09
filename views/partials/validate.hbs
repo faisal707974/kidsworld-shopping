@@ -1,0 +1,26 @@
+<script>
+    function validate(event, errId, errMsg) {
+        event.preventDefault()
+        let errSpan = document.getElementById(errId)
+        errSpan.textContent = errMsg
+        let input = event.target
+        input.classList.add('errInput')
+    }
+
+    function clearErr(event,errId) {
+        let errSpan = document.getElementById(errId)
+        errSpan.textContent = ""
+        let input = event.target
+        input.classList.remove('errInput')
+
+    }
+</script>
+
+<style>
+    .errInput{
+        border-color:red;
+    }
+    .errSpan{
+        color: red;
+    }
+</style>

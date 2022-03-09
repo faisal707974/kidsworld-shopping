@@ -1,3 +1,4 @@
+{{>validate}}
 {{>imageCrop}}
 {{>admin-navbar}}
 
@@ -19,36 +20,36 @@
 
 
                     <div class="container">
-                        <form 
-                        {{#if product}}
-                        action="/admin/updateProduct/{{product._id}}" 
-                        {{else}} 
-                        action="/admin/addProduct" 
-                        {{/if}}
-                            method="post" enctype="multipart/form-data" id="addProductForm">
+                        <form {{#if product}} action="/admin/updateProduct/{{product._id}}" {{else}}
+                            action="/admin/addProduct" {{/if}} method="post" enctype="multipart/form-data"
+                            id="addProductForm">
                             <div class="row form-group">
                                 <div class="col-6">
                                     <p>
                                         <label for="name">Product Name</label>
-                                        <span id="errName"></span>
+                                        <span id="errName" class="errSpan"></span>
                                     </p>
-                                    <textarea name="name" type="text" class="form-control bigInputs"
-                                        {{!-- onblur="validate({username:true,id:'username'})" --}}
-                                        id="username">{{product.name}}</textarea>
+                                    <input name="name" type="text" class="form-control bigInputs"
+                                        pattern='^[a-z A-Z\\s]+'
+                                        oninvalid="validate(event,'errName','Required and Alphabets only')"
+                                        onfocus="clearErr(event,'errName')" id="username"
+                                        required>{{product.name}}</input>
                                     <br>
                                     <p>
                                         <label for="description">Description</label>
-                                        <span id="errDesc"></span>
+                                        <span id="errDesc" class="errSpan"></span>
                                     </p>
-                                    <textarea name="description" type="textarea" class="form-control bigInputs"
-                                        {{!-- onblur="validate({description:true,id:'description'})" --}}
-                                        id="description">{{product.description}}</textarea>
+                                    <input name="description" type="textarea" class="form-control bigInputs"
+                                        pattern='^[a-z A-Z\\s]+'
+                                        oninvalid="validate(event,'errDesc','Required and Alphabets only')"
+                                        onfocus="clearErr(event,'errDesc')" id="description"
+                                        required>{{product.description}}</input>
 
                                     <div class="imgBoxP2 ">
                                         <label class="mx-auto d-inline">Images</label>
-                                        <label for="files" id="newImage" class="addimagebtn">Add new image</label>
-                                        <input type="file" name="files" id="files" style="display:none" multiple
-                                            onchange="imagechange(event)">
+                                        <label for="file" id="newImage" class="addimagebtn">Add new image</label>
+                                        <input type="file" name="files" id="file" style="display:none" multiple
+                                            onchange="imagechange(event)" required>
 
                                         <div class="imagesBox form-control col" id="appendImages">
                                             <script>
@@ -64,7 +65,7 @@
                                                         let image = document.createElement('img');
                                                         image.src = '/images/products/' + id + '/' + i + '.jpg'
                                                         image.id = 'productimage' + i
-                                                       
+
                                                         let newdiv = document.getElementById('imagediv' + i)
                                                         newdiv.appendChild(image)
 
@@ -84,22 +85,40 @@
                                 <div class="col-6">
                                     <div class="row">
                                         <div class="col">
-                                            <label for="price">Price</label>
+                                            <p>
+                                                <label for="price">Price</label>
+                                                <span id="errPrice" class="errSpan"></span>
+                                            </p>
                                             <input name="price" type="text" class="form-control"
-                                                value="{{product.price}}">
+                                                pattern="^\d{0,8}(\.\d{2})?$"
+                                                oninvalid="validate(event,'errPrice','Required')"
+                                                onfocus="clearErr(event,'errPrice')" placeholder="0000.00"
+                                                value="{{product.price}}" required>
                                         </div>
                                         <div class="col">
-                                            <label for="maxPrice">Max Price</label>
+                                            <p>
+                                                <label for="maxPrice">Max Price</label>
+                                                <span id="errMaxPrice" class="errSpan"></span>
+                                            </p>
                                             <input name="maxPrice" type="text" class="form-control"
+                                                pattern="^\d{0,8}(\.\d{2})?$"
+                                                oninvalid="validate(event,'errMaxPrice','Required')"
+                                                onfocus="clearErr(event,'errMaxPrice')" placeholder="0000.00"
                                                 value="{{product.maxPrice}}">
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
                                         <div class="col">
+                                            <p>
                                             <label for="stock">Stock</label>
+                                            <span id="stock" class="errSpan"></span>
+                                            </p>
                                             <input name="stock" type="text" class="form-control"
-                                                value="{{product.stock}}">
+                                                pattern="^\d{1,}$"
+                                                oninvalid="validate(event,'stock','Required')"
+                                                onfocus="clearErr(event,'stock')"
+                                                value="{{product.stock}}" required>
                                         </div>
                                         <div class="col">
                                             <label for="offer">Offer</label>
@@ -107,9 +126,14 @@
                                                 value="{{product.offer}}">
                                         </div>
                                         <div class="col">
+                                            <p>
                                             <label for="brand">Brand</label>
+                                            <span id="brand" class="errSpan"></span>
+                                            </p>
                                             <input name="brand" type="text" class="form-control"
-                                                value="{{product.brand}}">
+                                                oninvalid="validate(event,'brand','Required')"
+                                                onfocus="clearErr(event,'brand')"
+                                                value="{{product.brand}}" required>
                                         </div>
                                     </div>
 
@@ -190,7 +214,7 @@
                             <br>
 
                             <div class="d-flex justify-content-center" style=" margin-bottom: 10px;">
-                                <input type="submit" onclick="return validSubmit()">
+                                <input type="submit">
                             </div>
                         </form>
                     </div>
@@ -219,12 +243,12 @@
 
             let image = document.createElement('img');
             image.src = URL.createObjectURL(event.target.files[i])
-            image.id = 'productimage' + i
+            image.id = 'productimage-' + i
             image.style = 'cursor:pointer'
             let newdiv = document.getElementById('imagediv' + i)
             newdiv.appendChild(image)
 
-            document.getElementById('productimage'+i).onclick = function (){crop(event) }
+            document.getElementById('productimage-' + i).onclick = function () { crop(this.id, event) }
 
             let itag = document.createElement('i')
             itag.className = "fa fa-close close"
@@ -233,7 +257,7 @@
 
     }
 
-   
+
 
 
     var closebtns = document.getElementsByClassName("close");
@@ -245,6 +269,16 @@
             this.parentElement.classList.remove("d-inline")
 
         });
+    }
+
+
+    function invalid(data) {
+        alert('dataa')
+
+        let errMsgId = data.errId
+        let errorMessage = data.errMsg
+        document.getElementById(errMsgId).innerHTML = errorMessage
+        alert(data)
     }
 
 </script>

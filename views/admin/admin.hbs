@@ -5,20 +5,20 @@
     <div class="dash-boxes col-3">
         <div class="inner-dash-boxes">
             <h5 class="d-block">
-                Today's Revenue
+                Total Sale
             </h5>
             <h1>
-                $ 23,456.70
+                $ {{compReport}}
             </h1>
         </div>
     </div>
     <div class="dash-boxes col-3">
         <div class="inner-dash-boxes">
             <h5>
-                Week's Revenue
+                Monthly Sale
             </h5>
             <h1>
-                $ 123,098.34
+                $ {{monthReport}}
             </h1>
         </div>
     </div>
@@ -28,7 +28,7 @@
                 Today's Orders
             </h5>
             <h1>
-                144
+                {{todayOrderCount}}
             </h1>
         </div>
     </div>
@@ -45,3 +45,65 @@
 
     </div>
 </div>
+<div style="display: flex; justify-content: space-around;">
+
+<canvas id="chart2" style="width:100%;max-width:600px; display: inline-block; margin: 10px;"></canvas>
+<canvas id="myChart" style="width:100%;max-width:700px; display: inline-block; margin: 10px;"></canvas>
+</div>
+
+
+
+<script>
+    var xValues = [{{#each orderStatus}}'{{this._id}}',{{/each}}];
+    var yValues = [{{#each orderStatus}}{{this.count}},{{/each}}];
+    var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+    ];
+
+let can = document.getElementById('myChart')
+let myChart = new Chart(can, {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Order status"
+            }
+        }
+    });
+</script>
+
+
+
+<script>
+    new Chart("chart2", {
+        type: "line",
+        data: {
+            labels: [{{#each salesPerMonth}}'{{this._id}}',{{/each}}],
+            datasets: [{
+                fill: true,
+                pointRadius: 10,
+                borderColor: "rgba(0,0,255,0.5)",
+                data: [{{#each salesPerMonth}}{{this.totalAmount}},{{/each}}]
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                fontSize: 16,
+                text:'Monthly revenue'
+            }
+        }
+    });
+</script>
