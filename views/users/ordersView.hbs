@@ -23,19 +23,27 @@
                                 <th>action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {{#each orders}}
-                            <tr>
-                                <td>{{@index}}</td>
-                                <td>{{this.product.name}}</td>
-                                <td>{{this.date}}</td>
-                                <td>{{this.paymentMethod}}</td>
-                                <td>{{this.status}}</td>
-                                <td><a href="" class="btn btn-danger">Cancel</a></td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
                     </table>
+                    <div style="height: 390px; overflow: auto;">
+
+                        <table>
+                            <tbody>
+                                {{#each orders}}
+                                <tr>
+                                    <td>{{@index}}</td>
+                                    <td>{{this.product.name}}</td>
+                                    <td>{{this.date}}</td>
+                                    <td>{{this.paymentMethod}}</td>
+                                    <td class="statusNow">{{this.status}}</td>
+                                    <td>
+                                        <p onclick="cancelOrder('{{this._id}}')" class="btn btn-danger my-2"
+                                            style="height: 40px;">Cancel</p>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
 
 
 
@@ -44,3 +52,32 @@
         </div>
     </div>
 </div>
+
+<script>
+    function cancelOrder(orderId) {
+        $.ajax({
+            url: '/cancelOrder',
+            method: 'post',
+            data: {
+                orderId: orderId
+            },
+            success: (response) => {
+                location.href = '/OrderView'
+            }
+        })
+    }
+
+    function removebtn() {
+        let length = document.getElementsByClassName('btn-danger').length
+
+        console.log(length)
+        for (var i = 0; i < length; i++) {
+            let status = document.getElementsByClassName('statusNow').item(i).innerHTML
+            if (status === 'Cancelled') {
+                let elem = document.getElementsByClassName('btn-danger').item(i).hidden=true
+            }
+
+        }
+    }
+    removebtn()
+</script>

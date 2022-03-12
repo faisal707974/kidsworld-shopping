@@ -19,11 +19,27 @@ module.exports = {
         })
     },
 
-    saveNumber: (Number) => {
+    saveNumber: (Number,referal) => {
+
+        function makeid() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          
+            for (var i = 0; i < 10; i++)
+              text += possible.charAt(Math.floor(Math.random() * possible.length));
+          
+            return text;
+          }
+          let referalCode  = makeid().toUpperCase()
+
+
         return new Promise((resolve, reject) => {
-            db.get().collection('users').insertOne({ mobile: Number, block: false}).then((data) => {
+            db.get().collection('users').insertOne({ mobile: Number, block: false, referalCode:referalCode, referedBy:referal}).then((data) => {
                 resolve(data.insertedId)
             })
+            if(referal){
+                db.get().collection('users').updateOne({referalCode:referal},{$inc:{wallet:50}})
+            }
         })
     },
 
@@ -70,6 +86,27 @@ module.exports = {
                 resolve(response)
             })
         })
-    } 
+    },
+
+    checkreferal : (userId)=>{
+        return new Promise(async(resolve, reject)=>{
+            let user = await db.get().collection('users').find({_id:objectId(userId)}).toArray()
+            if(user[0].referedBy){
+                if(user[0].referalused){
+                    resolve(false)
+                }else{
+                    resolve(true)
+                }
+            }else{
+                resolve(false)
+            }
+        })
+    },
+
+    referalused : (userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection('users').updateOne({_id:objectId(userId)},{$set:{referalused:true}})
+        })
+    }
 
 }

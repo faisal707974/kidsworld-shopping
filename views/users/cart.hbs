@@ -49,8 +49,12 @@
                                                 </span>
                                             </button>
                                         </td>
-                                        <td style="text-align: center;" id="perpiece{{this.product._id}}">
-                                            {{this.product.price}}</td>
+                                        <td style="text-align: center;">
+                                            <span id="perpiece{{this.product._id}}">{{this.product.price}}</span><br>
+                                            <span style="color: greenyellow;">{{this.product.offer}} </span>
+                                            <span style="color: red;"><strike><i
+                                                        class="fa fa-inr"></i>{{this.product.maxPrice}}</strike></span>
+                                        </td>
                                         <td style="text-align: center; font-weight: bolder;"
                                             id="total{{this.product._id}}">
                                             {{this.total}}</td>
@@ -169,27 +173,85 @@
                     <hr>
                     <table>
                         <tr>
-                            <td>Price (3 items)</td>
+                            <td>Price ({{count}})</td>
                             <td id="cartTotal">{{cartTotal}}</td>
                         </tr>
                         <tr>
-                            <td>Discount</td>
+                            <td>Coupon Discount</td>
                             <td id="discountAmnt">00.0</td>
                         </tr>
+                        <tr id="fromWallet">
+                            <td>From wallet</td>
+                            <td id="walletAmnt">00.0</td>
+                        </tr>
+                        {{#if referal}}
+                        <tr>
+                            <td>Reference Discount</td>
+                            <td id="referalDisc">100</td>
+                        </tr>
+                        {{/if}}
                         <tr>
                             <td>Delivery Charges</td>
                             <td>00.0</td>
                         </tr>
-                        <tr style="font-weight: bolder; border-top: 1px solid rgb(212, 208, 208);">
+                        <tr
+                            style="width: 300px; font-weight: bolder; border-top: 1px solid rgb(212, 208, 208); position: absolute; bottom:100px">
                             <td style="font-size: 18pt;">Total Amount</td>
                             <td style="font-size: 18pt;" id="cartFinalTotal"></td>
                         </tr>
                     </table>
-                        <script>
+                    <div style="position:absolute; bottom:155px" id="checkboxdiv">
+                        <input type="checkbox" id="walletCheckbox" value="{{user.wallet}}">
+                        <h6 class="d-inline">Use your wallet balance : {{user.wallet}}</h6>
+                    </div>
+                    <script>
+                        function reloadGrandTotal() {
                             let total = $('#cartTotal').html()
                             let discount = $('#discountAmnt').html()
-                            $('#cartFinalTotal').html(total-discount)
-                        </script>
+                            let referalDisc = $('#referalDisc').html() | 0
+                            let walletAmnt = $('#walletAmnt').html() | 0
+                            let grandtotal = total - discount - referalDisc - walletAmnt
+                            $('#cartFinalTotal').html(grandtotal)
+
+
+                        }
+                        reloadGrandTotal()
+
+                        let total = $('#cartFinalTotal').val()
+                        let walletbal = $('#walletCheckbox').val()
+                        if (walletbal < 1) {
+                            $('#checkboxdiv').hide()
+                        }
+
+                        $('#fromWallet').hide()
+                        $('#walletCheckbox').on('change', () => {
+                            const cb = document.getElementById('walletCheckbox');
+                            if (cb.checked) {
+                                $('#fromWallet').show()
+                                getWalletAmnt() 
+                            } else {
+                                $('#fromWallet').hide()
+                                $('#walletAmnt').html(0)
+                            }
+                            reloadGrandTotal()
+                        })
+
+
+                        function getWalletAmnt() {
+                            let insertingWalletAmnt;
+                            if (total < walletbal) {
+                                insertingWalletAmnt = walletbal - total
+                            } else {
+                                insertingWalletAmnt = walletbal
+                            }
+
+                            $('#walletAmnt').html(insertingWalletAmnt)
+                        }
+
+
+
+
+                    </script>
                     <div class="couponDiv">
                         <form action="/redeemcoupon" method="POST" id="couponForm" hidden>
                             <input type="text" name="coupon_code" id="couponInput">
@@ -198,34 +260,33 @@
                         </form>
                     </div>
                     <script>
-                        $('#couponForm').submit((event)=>{
+                        $('#couponForm').submit((event) => {
                             event.preventDefault()
                             $.ajax({
-                                url:'/redeemcoupon',
+                                url: '/redeemcoupon',
                                 data: $('#couponForm').serialize(),
-                                method:'post',
-                                success:(response)=>{
-                                    if(response){
+                                method: 'post',
+                                success: (response) => {
+                                    if (response) {
                                         let total = $('#cartTotal').html()
-                                        let discount = (response.discount*total)/100
-                                        $('#discountAmnt').html(discount)
-                                        let grandTotal = total-discount
-                                        $('#cartFinalTotal').html(grandTotal.toFixed(2))
+                                        let discount = (response.discount * total) / 100
+                                        $('#discountAmnt').html(discount.toFixed(2))
+                                        reloadGrandTotal()
                                         $('#couponErr').html('The coupon is applied')
-                                        
-                                        setTimeout(function(){
+
+                                        setTimeout(function () {
                                             timeout('#couponErr')
                                             $('#couponInput').val('')
-                                            } ,2000)
-                                    }else{
+                                        }, 2000)
+                                    } else {
                                         $('#couponErr').html('The coupon is not valid')
-                                        setTimeout(function (){timeout('#couponErr')},2000)
+                                        setTimeout(function () { timeout('#couponErr') }, 2000)
                                     }
                                 }
                             })
                         })
 
-                        function timeout (id){
+                        function timeout(id) {
                             $(id).html('')
                         }
                     </script>
@@ -260,7 +321,6 @@
     function changeQuantity(cartid, productid, count, pricePerPiece) {
         let perpieceId = '#perpiece' + productid
         let totalId = '#total' + productid
-
         let perpiece = $(perpieceId).html()
         let total = $(totalId).html()
 
@@ -286,7 +346,7 @@
                     console.log(response)
                     document.getElementById('cartTotal').innerHTML = response.cartTotal
                     document.getElementById('cartFinalTotal').innerHTML = response.cartTotal
-
+                    reloadGrandTotal()
                 }
             }
         })

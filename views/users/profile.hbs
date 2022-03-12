@@ -19,7 +19,8 @@
                                 <div class="profilepic">
                                     <div>
 
-                                        <img src="/images/pngkey.com-profile-icon-png-2024691.png" alt="" style="display: block;">
+                                        <img src="/images/pngkey.com-profile-icon-png-2024691.png" alt=""
+                                            style="display: block;">
                                     </div>
                                     <div>
                                         <h5>Hi, User</h5>
@@ -30,12 +31,19 @@
 
                                     <label for="">Name</label>
                                     <input name="name" type="text" class="form-control" value="{{user.name}}">
-                                    <br>
+                                    {{!-- <br> --}}
                                     <label for="">Mobile</label>
-                                    <input name="mobile" type="text" class="form-control" value="{{user.mobile}}" readonly>
-                                    <br>
+                                    <input name="mobile" type="text" class="form-control" value="{{user.mobile}}"
+                                        readonly>
+                                    {{!-- <br> --}}
                                     <label for="">Email</label>
                                     <input name="email" type="email" class="form-control" value="{{user.email}}">
+                                    {{!-- <br> --}}
+                                    {{#if referalStatus}}
+                                    <label for="">Referal Code</label>
+                                    <input name="referalCode" type="referalCode" class="form-control" value="{{user.referedBy}}">
+                                    {{else}}
+                                    {{/if}}
                                     <br>
                                     <input type="submit" value="  save  " onclick="notify('Your profile updated')">
 
@@ -47,10 +55,11 @@
                                 <p><a href="/orderView">My orders</a></p>
                                 <p>Account Settings</p>
                                 <p><a href="/addressManagement">Manage Addresses</a></p>
-                                <p>Profile information</p>
+                                <p><a href="" data-bs-toggle="modal" data-bs-target="#referalmodal">Get Your Referal
+                                        link</a></p>
                                 {{!-- <p>Notification preferences</p> --}}
                                 <p>Gift cards</p>
-                                <p>Payments</p>
+                                <p><a href="" data-bs-toggle="modal" data-bs-target="#walletmodal">Wallet</a></p>
                                 <p>My Rewards</p>
                                 <p>My Reviews & Ratings</p>
                                 <p>All notifications</p>
@@ -64,6 +73,82 @@
 
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="walletmodal" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="walletModalLabel">Your Wallet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="display: flex; justify-content:center">
+                <div class="d-flex">
+
+                    <div  class="px-3">
+                        <p style="color: red; margin-bottom:0%; font-size:20pt" id="referalCode">Balance : <i class="fa fa-rupee"></i> {{user.wallet}}</p>
+                    </div>
+                    
+                        
+                    <script>
+                        function copyReferal() {
+                            let copyText = document.getElementById("referalCode").textContent
+                            navigator.clipboard.writeText(copyText);
+                            $('#copyIcon').html(' copied')
+                            setTimeout(function(){
+                            $('#copyIcon').html('')
+                            },2000)
+                        }
+
+                    </script>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="referalmodal" tabindex="-1" aria-labelledby="referalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="referalModalLabel">Your referal code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="display: flex; justify-content:center">
+                <div class="d-flex">
+
+                    <div style="border: 2px dashed red;" class="px-3">
+                        <p style="color: red; margin-bottom:0%" id="referalCode">localhost:3000/login/{{user.referalCode}}</p>
+                    </div>
+                    <i class="fa fa-copy ms-3 my-auto" style="color: red;" onclick="copyReferal()" id="copyIcon"></i>
+
+                    <script>
+                        function copyReferal() {
+                            let copyText = document.getElementById("referalCode").textContent
+                            navigator.clipboard.writeText(copyText);
+                            $('#copyIcon').html(' copied')
+                            setTimeout(function(){
+                            $('#copyIcon').html('')
+                            },2000)
+                        }
+
+                    </script>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

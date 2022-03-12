@@ -31,11 +31,13 @@ router.get('/', async function (req, res, next) {
       cartCount: cartCount
     })
   })
+  
 });
 
 // {----- Page -- Login -----}
 
-router.get('/login', (req, res, next) => {
+router.get('/login/:referal?', (req, res, next) => {
+  req.session.referal = req.params.referal
   res.render('users/login', {
     css: 'user/loginLayout'
   })
@@ -94,7 +96,7 @@ router.get('/otpRequest', (req, res, next) => {
       from: '+19125285863', // From a valid Twilio number
     })
     .then((message) => console.log(message.sid));
- 
+    
   })
 })
 
@@ -107,7 +109,7 @@ router.post('/otpVerify', async (req, res, next) => {
     req.session.userLoggedIn = true
     req.session.mobileNumber = mobileNumber
     if (req.session.userExist == false) {
-      const response = await userHelpers.saveNumber(mobileNumber)
+      const response = await userHelpers.saveNumber(mobileNumber,req.session.referal)
       req.session.user = {}
       req.session.user._id = response
     }
@@ -139,6 +141,10 @@ async function cartPage (req, res){
     let count =  await productHelpers.cartProductsCount(req.session.user._id)
     let cartTotal = await productHelpers.cartTotal(req.session.user._id)
     let addresses = await userHelpers.getAddresses(req.session.user._id)
+    let referal = await userHelpers.checkreferal(req.session.user._id)
+    let user = await userHelpers.getUser(req.session.mobileNumber)
+
+    console.log({user})
      res.render('users/cart', {
        css: 'user/navbar',
        css1: 'user/cart',
@@ -146,7 +152,9 @@ async function cartPage (req, res){
        count:count[0]?.products.length,
        cartTotal : cartTotal[0]?.total,
        user: req.session.user,
-       addresses : addresses
+       addresses : addresses,
+       referal,
+       user : user[0]
       })
     }
 }
@@ -156,21 +164,22 @@ async function cartPage (req, res){
 // {----- Page -- profile -----}
 
 router.get('/profile',profilePage)
-
-
-function profilePage (req, res){
-  let number = req.session.mobileNumber
+ 
+async function profilePage(req, res){
   if (req.session.userLoggedIn) {
+    let referalStatus = await userHelpers.checkreferal(req.session.user._id)
+    let number = req.session.mobileNumber
     userHelpers.getUser(number).then((response) => {
       res.render('users/profile', {
         css: 'user/navbar',
         css1: 'user/profile',
         status: req.session.userLoggedIn,
-        user: response[0]
+        user: response[0],
+        referalStatus
       })
     })
   } else {
-    res.redirect('/')
+    res.redirect('/login')
   }
 }
 
@@ -192,7 +201,7 @@ router.post('/updateUser', (req, res) => {
   res.redirect('/profile')
  
 })
-
+ 
 
 router.get('/addcart/:id', async(req, res) => {
   let product = await productHelpers.getProduct(req.params.id)
@@ -285,8 +294,11 @@ router.get('/orderView',async(req,res)=>{
 })
 
 
-router.get('/cancelOrder',(req,res)=>{
-  productHelpers.cancelOrder()
+router.post('/cancelOrder',(req,res)=>{
+  productHelpers.cancelOrder(req.body.orderId).then((response)=>{
+    console.log(response)
+    res.json(response)
+  })
 })
 
 router.post('/verify-payment',(req,res)=>{
@@ -305,12 +317,17 @@ router.post('/verify-payment',(req,res)=>{
 })
 
 router.get('/paymentSuccessful',(req,res)=>{
+  userHelpers.checkreferal(req.session.user._id).then((response)=>{
+    if(response){
+      userHelpers.referalused(req.session.user._id)
+    }
+  })
   res.render('users/ThankYouPage',{
     css: 'user/navbar',
     css1:'user/thankYouPage',
   })
 })
- 
+  
 router.get('/addressManagement',async(req,res)=>{
   let addresses = await userHelpers.getAddresses(req.session.user._id)
   console.log('2addresses')
@@ -335,18 +352,7 @@ router.get('/deleteAddress/:id',(req,res)=>{
   
 
 router.get('/test',(req,res)=>{
-  function makeid() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
-    for (var i = 0; i < 20; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
-    return text;
-  }
-  
-  console.log(makeid());
-
+  productHelpers.productOffer('6216ff0bdf3c93b7de69da63')
   
 })
 

@@ -74,9 +74,9 @@ module.exports = {
                         products:1
                     }
                 },
-                {
-                    $unwind:'$products'
-                },
+                // {
+                //     $unwind:'$products'
+                // },
                 {
                     $lookup:{
                         from:'products',
@@ -110,6 +110,7 @@ module.exports = {
                     }
                 }
             ]).toArray()
+            console.log({orders})
             resolve(orders)
         })
     },
@@ -197,6 +198,7 @@ module.exports = {
                     $sort:{_id:1} 
                 }
             ]).toArray()
+            
             console.log(report)
             resolve(report)
         })

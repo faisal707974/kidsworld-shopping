@@ -33,7 +33,8 @@
                                 <td>{{this.paymentMethod}}</td>
                                 <td>{{this.products.total}}</td>
                                 <td>
-                                    <select name="" class="unique" onchange="changeStatus(this.value,'{{this._id}}')">
+                                    <p id="cncl{{this._id}}" hidden>Cancelled</p>
+                                    <select name="" class="unique" id="orderStatus{{this._id}}" onchange="changeStatus(this.value,'{{this._id}}')">
                                         <option id="currentStatus{{this._id}}" value="" hidden>{{this.status}}</option>
                                         <option class="O_cancel{{this._id}}" value="Processing">Processing</option>
                                         <option class="O_cancel{{this._id}}" value="Shipped">Shipped</option>
@@ -89,11 +90,13 @@
         }
 
         if (value == 'Cancelled') {
-            let O_cancel = document.querySelectorAll('.O_cancel')
-            for (var i = 0; i < O_cancel.length; i++) {
-                O_cancel[i].hidden = true
-            }
-            location.href = '/admin/Orders'
+            document.getElementById('cncl'+orderId).hidden = false
+            document.getElementById('orderStatus'+orderId).hidden = true
+            //let O_cancel = document.querySelectorAll('.O_cancel')
+            //for (var i = 0; i < O_cancel.length; i++) {
+            //    O_cancel[i].hidden = true
+            //}
+            //location.href = '/admin/Orders'
         }
     }
 
@@ -106,11 +109,17 @@
             let newId = 'currentStatus' + id
             let value = document.getElementById('currentStatus' + id).textContent
 
+            console.log(value)
+
+            //if (value == 'Cancelled') {
+            //    let O_cancel = document.querySelectorAll('.O_cancel' + id)
+            //   for (var i = 0; i < O_cancel.length; i++) {
+            //        O_cancel[i].hidden = true
+            //    }
+            //}
             if (value == 'Cancelled') {
-                let O_cancel = document.querySelectorAll('.O_cancel' + id)
-                for (var i = 0; i < O_cancel.length; i++) {
-                    O_cancel[i].hidden = true
-                }
+            document.getElementById('cncl'+id).hidden = false 
+            document.getElementById('orderStatus'+id).hidden = true
             }
         }
 

@@ -7,7 +7,6 @@ const { response } = require('express');
 
 /* GET home page. */
 router.get('/',async function (req, res, next) {
-
   let compReport = await productHelpers.get_complete_report()
   let monthReport = await productHelpers.get_thisMonth_report()
   let salesPerMonth = await productHelpers.salesPerMonth()

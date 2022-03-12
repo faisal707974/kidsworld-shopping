@@ -101,6 +101,7 @@ module.exports = {
                     }
                 }
             ]).toArray()
+            console.log(cartItems)
             resolve(cartItems)
         })
     },
@@ -188,11 +189,13 @@ module.exports = {
                     }
                 }
             ]).toArray()
+            console.log({total})
             resolve(total)
         })
     },
 
     placeOrder : (order,products,totalPrice)=>{
+        console.log({products})
         return new Promise ((resolve,reject)=>{
             let status =  order.payment==='cod'?'placed':'pending'
             let orderObj = {
@@ -316,9 +319,14 @@ module.exports = {
     // }
 
 
-    cancelOrder : ()=>{
-        db.get().collection('order').upadateOne({_id:objectId(orderId)})
-    },
+    cancelOrder : (orderId)=>{ 
+        const promise =  new Promise((resolve,reject)=>{
+            db.get().collection('order').updateOne({_id:objectId(orderId)},{$set:{status:'Cancelled'}}).then((response)=>{
+                resolve(response)
+            })
+        })
+        return promise
+    }, 
 
 
     checkCoupon : (code,userId)=>{
@@ -331,7 +339,7 @@ module.exports = {
 
     add_user_to_coupon : (userId,couponId)=>{
         db.get().collection('coupon').updateOne({_id:objectId(couponId)},{$push:{users:userId}})
-    }
+    },
 
 
 }

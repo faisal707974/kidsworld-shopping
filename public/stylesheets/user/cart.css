@@ -102,9 +102,10 @@
     height: 55px;
 }
 .placeorder{
-    position: relative;
-    top: 98px;
-    width: 100%;
+    position: absolute;
+    bottom:35px;
+    right: 135px;
+    width: 24%;
     height: 50px;
     border: none;
     
