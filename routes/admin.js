@@ -7,11 +7,11 @@ const { response } = require('express');
 
 /* GET home page. */
 router.get('/',async function (req, res, next) {
-  let compReport = await productHelpers.get_complete_report()
-  let monthReport = await productHelpers.get_thisMonth_report()
-  let salesPerMonth = await productHelpers.salesPerMonth()
-  let orderStatus = await productHelpers.orderStatus()
-  let todayOrderCount = await productHelpers.todayOrderCount()
+  let compReport = await productHelpers.get_complete_report() | 0
+  let monthReport = await productHelpers.get_thisMonth_report() | 0
+  let salesPerMonth = await productHelpers.salesPerMonth() | 0
+  let orderStatus = await productHelpers.orderStatus() | 0
+  let todayOrderCount = await productHelpers.todayOrderCount() | 0
   console.log(salesPerMonth)
   console.log(new Date().toLocaleString('en-us',{month:'short'}))
   res.render('admin/admin', {
