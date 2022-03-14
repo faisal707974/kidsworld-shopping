@@ -151,7 +151,7 @@ module.exports = {
                         }
                      }
                  }
-             ]).toArray()
+             ]).toArray() |0
              resolve(report[0]?.total | 0)
         })
     },
@@ -176,7 +176,7 @@ module.exports = {
                         }
                     }
                 }
-            ]).toArray()
+            ]).toArray() | 0
             resolve(report[0]?.total | 0 )
         })
     },
@@ -197,7 +197,7 @@ module.exports = {
                 {
                     $sort:{_id:1} 
                 }
-            ]).toArray()
+            ]).toArray() | 0
             
             console.log(report)
             resolve(report)
@@ -219,7 +219,7 @@ module.exports = {
                 {
                     $sort:{_id:1}
                 }
-            ]).toArray()
+            ]).toArray() | 0
             resolve(report)
         })
     },
@@ -241,7 +241,7 @@ module.exports = {
                 {
                     $count:'orderCount'
                 }
-            ]).toArray()
+            ]).toArray() | 0
             resolve(count[0]?.orderCount | 0)
         })
     },
