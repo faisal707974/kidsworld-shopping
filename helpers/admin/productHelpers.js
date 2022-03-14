@@ -110,7 +110,6 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log({orders})
             resolve(orders)
         })
     },
@@ -199,7 +198,6 @@ module.exports = {
                 }
             ]).toArray() | 0
             
-            console.log(report)
             resolve(report)
         })
     },
@@ -248,7 +246,6 @@ module.exports = {
 
     addCoupon : (data)=>{
         return new Promise ((resolve,reject)=>{
-            console.log(data)
             db.get().collection('coupon').insertOne(data).then((response)=>{
                 resolve(response)
             })
@@ -263,7 +260,6 @@ module.exports = {
     },
 
     removeCoupon : async(couponId,callback)=>{
-        console.log('what happened')
         let response = await db.get().collection('coupon').deleteOne({_id:objectId(couponId)})
         callback(response)
     },
@@ -329,15 +325,12 @@ module.exports = {
                     salesOfLastWeekData.push(0)
                 }
             }
-            console.log(salesOfLastWeekData);
             resolve(salesOfLastWeekData)
     
         })
       },
     
       getSalesReport: (from, to) => {
-        console.log(new Date(from));
-        console.log(new Date(to));
         return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection('delivered').aggregate([
                 {
@@ -364,7 +357,6 @@ module.exports = {
                     },
                 },
             ]).toArray()
-            console.log(data);
             resolve(data)
     
         })

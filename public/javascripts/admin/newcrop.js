@@ -14,8 +14,6 @@ let result = document.querySelector(".result"),
 
 
 function crop(imgId, e) {
-    console.log('imgId')
-    console.log(imgId)
     let sl = imgId.split('-')
     document.getElementById('imgcrop').hidden = false
     if (e.target.files.length) {
@@ -45,15 +43,12 @@ function crop(imgId, e) {
             e.preventDefault();
             // get result to data uri
             let imgSrc = cropper.getCroppedCanvas({}).toDataURL();
-            console.log('imgSrc')
-            console.log(imgSrc)
             document.getElementById(imgId).src = imgSrc;
         })
     }
 }
 
 $('#imgcrop').on('click', function (e) {
-    // console.log(e.files)
     if (e.target !== this)
         return;
 

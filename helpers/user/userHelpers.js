@@ -52,8 +52,6 @@ module.exports = {
 
     updateUser: (data) => {
         return new Promise((resolve, reject) => {
-            console.log('data')
-            console.log(data)
             db.get().collection('users').updateOne({ mobile: data.mobile }, {
                 $set: {
                     name: data.name,

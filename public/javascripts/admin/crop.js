@@ -192,7 +192,6 @@ function urlConversion() {
 
 
   $('#imgcrop').on('click', function(e) {
-    console.log(e.target)
     if (e.target !== this)
     return;
     

@@ -144,7 +144,6 @@ async function cartPage (req, res){
     let referal = await userHelpers.checkreferal(req.session.user._id)
     let user = await userHelpers.getUser(req.session.mobileNumber)
 
-    console.log({user})
      res.render('users/cart', {
        css: 'user/navbar',
        css1: 'user/cart',
@@ -242,10 +241,8 @@ router.post('/redeemcoupon',(req,res)=>{
     if(response){
       res.json({discount:response.discount})
       productHelpers.add_user_to_coupon(req.session.user._id,response._id)
-      console.log(response)
     }else{
       res.json(null)
-      console.log('resfalse')
     }
   })
 })
@@ -255,21 +252,16 @@ router.post('/place_order',async(req,res)=>{
   let products = await productHelpers.getCartProductList(req.body.userId)
   // let totalPrice = await productHelpers.cartTotal(req.session.user._id)
 
-  console.log('req.body')
-  console.log(req.body)
   productHelpers.placeOrder(req.body,products,req.body.GrandTotal).then((orderId)=>{
     if(req.body.payment ==='cod'){
-      console.log('cod if')
       res.json({
         codStatus: true
       })
     }else if(req.body.payment === 'razorpay'){ 
-      console.log('razorpay if')
       productHelpers.generateRazorpay(orderId,req.body.GrandTotal).then((response)=>{
         res.json(response)
       })
     }else if(req.body.payment === 'paypal'){ 
-      console.log('paypal if')
       res.json({
         status:true
       })
@@ -296,7 +288,6 @@ router.get('/orderView',async(req,res)=>{
 
 router.post('/cancelOrder',(req,res)=>{
   productHelpers.cancelOrder(req.body.orderId).then((response)=>{
-    console.log(response)
     res.json(response)
   })
 })
@@ -330,8 +321,6 @@ router.get('/paymentSuccessful',(req,res)=>{
   
 router.get('/addressManagement',async(req,res)=>{
   let addresses = await userHelpers.getAddresses(req.session.user._id)
-  console.log('2addresses')
-  console.log(addresses)
   res.render('users/address',{
     css:'user/navbar',
     css1:'user/address',

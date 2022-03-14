@@ -101,7 +101,6 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log(cartItems)
             resolve(cartItems)
         })
     },
@@ -189,13 +188,11 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log({total})
             resolve(total)
         })
     },
 
     placeOrder : (order,products,totalPrice)=>{
-        console.log({products})
         return new Promise ((resolve,reject)=>{
             let status =  order.payment==='cod'?'placed':'pending'
             let orderObj = {
@@ -214,7 +211,6 @@ module.exports = {
 
             db.get().collection('order').insertOne(orderObj).then((response)=>{
                 db.get().collection('cart').deleteOne({user:order.userId})
-                console.log('ordered and cart deleted')
                 resolve(response.insertedId.toString())
             })
         })

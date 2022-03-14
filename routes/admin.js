@@ -12,8 +12,6 @@ router.get('/',async function (req, res, next) {
   let salesPerMonth = await productHelpers.salesPerMonth() | 0
   let orderStatus = await productHelpers.orderStatus() | 0
   let todayOrderCount = await productHelpers.todayOrderCount() | 0
-  console.log(salesPerMonth)
-  console.log(new Date().toLocaleString('en-us',{month:'short'}))
   res.render('admin/admin', {
     admin: true,
     dashboard: 'active',
@@ -154,7 +152,6 @@ router.get('/orders',async(req,res)=>{
 
 router.get('/offers',async(req,res)=>{
   let coupons = await productHelpers.getCoupons()
-  console.log(coupons)
   res.render('admin/Offers',{
     css:'admin/Offers',
     css1:'admin/navbar',
@@ -196,7 +193,6 @@ router.get('/reports',(req,res)=>{
 
 router.post('/salesreport/report', async (req, res) => {
   let salesReport = await productHelpers.getSalesReport(req.body.from, req.body.to)
-  console.log({salesReport})
   res.json({ report: salesReport })
 })
 
