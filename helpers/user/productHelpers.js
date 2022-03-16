@@ -206,7 +206,7 @@ module.exports = {
                 products:products,
                 totalAmount:totalPrice,
                 status: status,
-                date: new Date().toString()
+                date: new Date()
             }
 
             db.get().collection('order').insertOne(orderObj).then((response)=>{

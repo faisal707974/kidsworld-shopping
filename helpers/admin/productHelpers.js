@@ -163,7 +163,7 @@ module.exports = {
                 {
                     $match:{
                         date:{
-                            $gt:new Date(new Date().getFullYear(),new Date().getMonth(),1)
+                            $gt:(new Date().getFullYear(),new Date().getMonth(),1)
                         }
                     }
                 },

@@ -35,8 +35,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileupload())
 
 db.connect((err)=>{
-  if (err) console.log('Database connection error : '+err)
-  else console.log('Database connected')
+  if (err){
+    console.log('Database connection error : '+err)
+  }else{
+    console.log('Database connected')
+  }
 })
 
 app.use('/admin', adminRouter); 

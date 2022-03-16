@@ -6,8 +6,9 @@ const state = {
 
 module.exports.connect = function(done){
     const url = 'mongodb+srv://faisal:mBgBIHLybatbOt32@kidsworld.36ptq.mongodb.net/KidsWorld?retryWrites=true&w=majority'
+    // const url = 'mongodb://localhost:27017'
     const dbname = 'KidsWorld'
-
+    
     mongoClient.connect(url,(err,data)=>{
         if(err){
             return done(err)
